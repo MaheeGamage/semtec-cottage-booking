@@ -1,0 +1,39 @@
+@prefix sswap: <http://sswapmeet.sswap.info/sswap/> .
+@prefix ont: <http://localhost:8080/SW_project/cottagebooking#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ss: <http://localhost:8080/sswap-servlet/> .
+
+<http://localhost:8080/sswap-servlet/bookingService>
+  a sswap:Resource, ont:BookingService ;
+  sswap:providedBy <http://localhost:8080/sswap-servlet/res/resourceProvider> ;
+  sswap:name "Cottage booking sswap service" ;
+  sswap:oneLineDescription "A service that search available cottages" ;
+  sswap:operatesOn [
+    a sswap:Graph ;
+    sswap:hasMapping [
+      a sswap:Subject, ont:BookingServiceRequest ;
+      ont:bookerName "John"^^xsd:string ;
+      ont:peopleCount "3"^^xsd:int ;
+      ont:bedroomCount "1"^^xsd:int ;
+      ont:maxLakeDistance "150"^^xsd:int ;
+      ont:nearestCity "Jyvaskyla"^^xsd:string ;
+      ont:maxCityDistance "12"^^xsd:int ;
+      ont:dayCount "3"^^xsd:int ;
+      ont:startDate "2024-11-05"^^xsd:date ;
+      ont:maxDayShifts "0"^^xsd:int ;
+      sswap:mapsTo [
+        a sswap:Object, ont:BookingServiceResponse ;
+        ont:bookerName "Jhon"^^xsd:string ;
+        ont:bookingNumber "1001"^^xsd:string ;
+        ont:cottageAddress "123 Lakeview Street, Jyvaskyla"^^xsd:string ;
+        ont:cottageImageUrl "http://localhost:8080/booking/res/images/ctg1.jpg"^^xsd:string ; #try url related data type
+        ont:numberOfPlaces "4"^^xsd:int ;
+        ont:numberOfBedrooms "2"^^xsd:int ;
+        ont:distanceToLake "100"^^xsd:int ;
+        ont:nearestCity "Jyvaskyla"^^xsd:string ;
+        ont:distanceToCity "10"^^xsd:int ;
+        ont:bookingStartDate "2024-11-05"^^xsd:date ;
+        ont:bookingEndDate "2024-11-08"^^xsd:date
+      ]
+    ]
+  ] .

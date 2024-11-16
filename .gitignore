@@ -1,0 +1,5 @@
+# Ignore Maven build artifacts
+target/
+.idea/
+.project
+.classpath

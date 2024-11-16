@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:resource="http://localhost:8080/SSWAP_Service_2019/"
+    xmlns:ont="http://localhost:8080/SW_project/cottagebooking#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:sswap="http://sswapmeet.sswap.info/sswap/"
+>
+    <sswap:Resource rdf:about="http://localhost:8080/sswap-servlet/bookingService">
+        <rdf:type rdf:resource="http://localhost:8080/SW_project/cottagebooking#BookingService" />
+        <sswap:providedBy rdf:resource="http://localhost:8080/sswap-servlet/res/resourceProvider" />
+        <sswap:name>Cottage booking sswap service</sswap:name>
+        <sswap:oneLineDescription>A service that search available cottages</sswap:oneLineDescription>
+        <sswap:operatesOn>
+            <sswap:Graph>
+                <sswap:hasMapping>
+                    <sswap:Subject>
+                        <rdf:type
+                            rdf:resource="http://localhost:8080/SW_project/cottagebooking#BookingServiceRequest" />
+                        <ont:bookerName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">""</ont:bookerName>
+                        <ont:peopleCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int">0</ont:peopleCount>
+                        <ont:bedroomCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int">0</ont:bedroomCount>
+                        <ont:maxLakeDistance rdf:datatype="http://www.w3.org/2001/XMLSchema#int">0</ont:maxLakeDistance>
+                        <ont:nearestCity rdf:datatype="http://www.w3.org/2001/XMLSchema#string">""</ont:nearestCity>
+                        <ont:maxCityDistance rdf:datatype="http://www.w3.org/2001/XMLSchema#int">0</ont:maxCityDistance>
+                        <ont:dayCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int">0</ont:dayCount>
+                        <ont:startDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">
+                            2024-11-10T00:00:00</ont:startDate>
+                        <ont:maxDayShifts rdf:datatype="http://www.w3.org/2001/XMLSchema#int">0</ont:maxDayShifts>
+                        <sswap:mapsTo>
+                            <sswap:Object>
+                                <rdf:type
+                                    rdf:resource="http://localhost:8080/SW_project/cottagebooking#BookingServiceResponse" />
+                                <ont:bookerName
+                                    rdf:datatype="http://www.w3.org/2001/XMLSchema#string">
+                                    ""</ont:bookerName>
+                                <ont:bookingNumber
+                                    rdf:datatype="http://www.w3.org/2001/XMLSchema#string">""</ont:bookingNumber>
+                                <ont:cottageAddress
+                                    rdf:datatype="http://www.w3.org/2001/XMLSchema#string">""</ont:cottageAddress>
+                                <ont:cottageImageUrl
+                                    rdf:datatype="http://www.w3.org/2001/XMLSchema#string">""</ont:cottageImageUrl>
+                                <ont:numberOfPlaces
+                                    rdf:datatype="http://www.w3.org/2001/XMLSchema#int">0</ont:numberOfPlaces>
+                                <ont:numberOfBedrooms
+                                    rdf:datatype="http://www.w3.org/2001/XMLSchema#int">0</ont:numberOfBedrooms>
+                                <ont:distanceToLake
+                                    rdf:datatype="http://www.w3.org/2001/XMLSchema#int">0</ont:distanceToLake>
+                                <ont:nearestCity
+                                    rdf:datatype="http://www.w3.org/2001/XMLSchema#string">""</ont:nearestCity>
+                                <ont:distanceToCity
+                                    rdf:datatype="http://www.w3.org/2001/XMLSchema#int">0</ont:distanceToCity>
+                                <ont:bookingStartDate
+                                    rdf:datatype="http://www.w3.org/2001/XMLSchema#date">
+                                    2024-11-10T00:00:00</ont:bookingStartDate>
+                                <ont:bookingEndDate
+                                    rdf:datatype="http://www.w3.org/2001/XMLSchema#date">
+                                    2024-11-10T00:00:00</ont:bookingEndDate>
+                            </sswap:Object>
+                        </sswap:mapsTo>
+                    </sswap:Subject>
+                </sswap:hasMapping>
+            </sswap:Graph>
+        </sswap:operatesOn>
+    </sswap:Resource>
+</rdf:RDF>
