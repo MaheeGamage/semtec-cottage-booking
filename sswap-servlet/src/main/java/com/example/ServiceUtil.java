@@ -116,4 +116,8 @@ public class ServiceUtil {
 
 		return jsonObject;
 	}
+	
+	public static String checkAndReturnString(String str) {
+        return (str == null) ? "" : str;
+    }
 }
