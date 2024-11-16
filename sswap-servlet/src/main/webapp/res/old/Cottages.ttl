@@ -1,0 +1,72 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix cb: <http://example.org/ex#> .
+
+# Cottage 1
+cb:Cottage1 rdf:type cb:Cottage ;
+    cb:hasMaxNumberOfPeople 4 ;
+    cb:hasNumberOfBedrooms 2 ;
+    cb:hasDistanceFromLake 100 ;
+    cb:hasAddress "123 Lakeview Street, Jyvaskyla" ;
+    cb:isLocatedAt cb:Location1 .
+
+# Cottage 2
+cb:Cottage2 rdf:type cb:Cottage ;
+    cb:hasMaxNumberOfPeople 6 ;
+    cb:hasNumberOfBedrooms 3 ;
+    cb:hasDistanceFromLake 300 ;
+    cb:hasAddress "456 Forest Drive, Helsinki" ;
+    cb:isLocatedAt cb:Location2 .
+
+# Cottage 3
+cb:Cottage3 rdf:type cb:Cottage ;
+    cb:hasMaxNumberOfPeople 8 ;
+    cb:hasNumberOfBedrooms 4 ;
+    cb:hasDistanceFromLake 500 ;
+    cb:hasAddress "789 Mountain Road, Tampere" ;
+    cb:isLocatedAt cb:Location3 .
+
+# Cottage 4
+cb:Cottage4 rdf:type cb:Cottage ;
+    cb:hasMaxNumberOfPeople 5 ;
+    cb:hasNumberOfBedrooms 2 ;
+    cb:hasDistanceFromLake 200 ;
+    cb:hasAddress "101 River Street, Turku" ;
+    cb:isLocatedAt cb:Location4 .
+
+# Cottage 5
+cb:Cottage5 rdf:type cb:Cottage ;
+    cb:hasMaxNumberOfPeople 10 ;
+    cb:hasNumberOfBedrooms 5 ;
+    cb:hasDistanceFromLake 50 ;
+    cb:hasAddress "202 Hilltop Lane, Lahti" ;
+    cb:isLocatedAt cb:Location5 .
+
+# Location details
+
+# Location of Cottage 1
+cb:Location1 rdf:type cb:Location ;
+    cb:hasNearestCityName "Jyvaskyla" ;
+    cb:hasDistanceFromCity 10 .
+
+# Location of Cottage 2
+cb:Location2 rdf:type cb:Location ;
+    cb:hasNearestCityName "Helsinki" ;
+    cb:hasDistanceFromCity 20 .
+
+# Location of Cottage 3
+cb:Location3 rdf:type cb:Location ;
+    cb:hasNearestCityName "Tampere" ;
+    cb:hasDistanceFromCity 15 .
+
+# Location of Cottage 4
+cb:Location4 rdf:type cb:Location ;
+    cb:hasNearestCityName "Turku" ;
+    cb:hasDistanceFromCity 25 .
+
+# Location of Cottage 5
+cb:Location5 rdf:type cb:Location ;
+    cb:hasNearestCityName "Lahti" ;
+    cb:hasDistanceFromCity 5 .

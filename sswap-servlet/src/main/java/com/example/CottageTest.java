@@ -1,6 +1,7 @@
 package com.example;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
@@ -11,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.json.JSONObject;
 
 /**
  * Servlet implementation class CottageTest
@@ -18,22 +21,24 @@ import org.apache.jena.rdf.model.Model;
 @WebServlet("/CottageTest")
 public class CottageTest extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public CottageTest() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public CottageTest() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 //		response.getWriter().append("Served at: ").append(request.getContextPath());
-		
+
 		RequestParams requestParams = new RequestParams();
 		requestParams.setName("John Doe");
 		requestParams.setBedroomCount(5);
@@ -75,11 +80,37 @@ public class CottageTest extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+//		doGet(request, response);
+
+		// Set response type
+		response.setContentType("application/json");
+
+		// Read RDF content from the POST body
+		Model ontModel = ModelFactory.createDefaultModel();
+		try (InputStream inputStream = request.getInputStream()) {
+			ontModel.read(inputStream, null, "TURTLE");
+		} catch (Exception e) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().write("{\"error\": \"Invalid RDF format\"}");
+			return;
+		}
+
+		// Parse the RDF to extract `hasMapping` section values
+		try {
+			JSONObject jObj = ServiceUtil.extract1(ontModel);
+			response.getWriter().write(jObj.toString());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().write("{\"error\": \"Server error occurred\"}");
+		}
 	}
 
 }

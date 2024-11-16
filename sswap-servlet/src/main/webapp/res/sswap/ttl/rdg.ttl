@@ -1,0 +1,39 @@
+@prefix sswap: <http://sswapmeet.sswap.info/sswap/> .
+@prefix ont: <http://localhost:8080/SW_project/cottagebooking#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ss: <http://localhost:8080/sswap-servlet/> .
+
+<http://localhost:8080/sswap-servlet/bookingService>
+  a sswap:Resource, ont:BookingService ;
+  sswap:providedBy <http://localhost:8080/sswap-servlet/res/resourceProvider> ;
+  sswap:name "Cottage booking sswap service" ;
+  sswap:oneLineDescription "A service that search available cottages" ;
+  sswap:operatesOn [
+    a sswap:Graph ;
+    sswap:hasMapping [
+      a sswap:Subject, ont:BookingServiceRequest ;
+      ont:bookerName ""^^xsd:string ;
+      ont:peopleCount ""^^xsd:int ;
+      ont:bedroomCount ""^^xsd:int ;
+      ont:maxLakeDistance ""^^xsd:int ;
+      ont:nearestCity ""^^xsd:string ;
+      ont:maxCityDistance ""^^xsd:int ;
+      ont:dayCount ""^^xsd:int ;
+      ont:startDate ""^^xsd:date ;
+      ont:maxDayShifts ""^^xsd:int ;
+      sswap:mapsTo [
+        a sswap:Object, ont:BookingServiceResponse ;
+        ont:bookerName ""^^xsd:string ;
+        ont:bookingNumber ""^^xsd:string ;
+        ont:cottageAddress ""^^xsd:string ;
+        ont:cottageImageUrl ""^^xsd:string ;
+        ont:numberOfPlaces ""^^xsd:int ;
+        ont:numberOfBedrooms ""^^xsd:int ;
+        ont:distanceToLake ""^^xsd:int ;
+        ont:nearestCity ""^^xsd:string ;
+        ont:distanceToCity ""^^xsd:int ;
+        ont:bookingStartDate ""^^xsd:date ;
+        ont:bookingEndDate ""^^xsd:date
+      ]
+    ]
+  ] .

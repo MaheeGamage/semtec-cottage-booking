@@ -44,27 +44,25 @@ public class SswapService extends HttpServlet {
 //		response.setContentType("application/rdf+xml");
 		response.setContentType("text/turtle");
 
-        // Generate RDG
-        Model rdgModel = RDGGenerator.generateRDG();
-        try (PrintWriter out = response.getWriter()) {
+		// Generate RDG
+		Model rdgModel = RDGGenerator.generateRDG();
+		try (PrintWriter out = response.getWriter()) {
 //            rdgModel.write(out, "RDF/XML");
-            rdgModel.write(out, "TURTLE");
-        }
+			rdgModel.write(out, "TURTLE");
+		}
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// Set response type
-		resp.setContentType("application/json");
-//	    System.out.println("Print ontModel 1step");
-//	    ontModel.write(System.out, "Turtle");
+		resp.setContentType("text/turtle");
+		
+		SWDB mediator = new SWDB();
 
 		// Read RDF content from the POST body
 		Model ontModel = ModelFactory.createDefaultModel();
 		try (InputStream inputStream = req.getInputStream()) {
 			ontModel.read(inputStream, null, "TURTLE");
-//	    	System.out.println("Print ontModel 2step");
-//	    	ontModel.write(System.out, "Turtle");
 		} catch (Exception e) {
 			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			resp.getWriter().write("{\"error\": \"Invalid RDF format\"}");
@@ -74,7 +72,28 @@ public class SswapService extends HttpServlet {
 		// Parse the RDF to extract `hasMapping` section values
 		try {
 			JSONObject jObj = ServiceUtil.extract1(ontModel);
-			resp.getWriter().write(jObj.toString());
+//			resp.getWriter().write(jObj.toString());
+
+			RequestParams params = new RequestParams();
+			params.setName(jObj.getString("bookerName"));
+			params.setBedroomCount(ServiceUtil.retrieveXSDIntValue(jObj.getString("bedroomCount"))); 
+			params.setMaxLakeDistance(ServiceUtil.retrieveXSDIntValue(jObj.getString("maxLakeDistance")));
+			params.setCity(jObj.getString("nearestCity"));
+			params.setMaxCityDistance(ServiceUtil.retrieveXSDIntValue(jObj.getString("maxCityDistance")));
+			params.setDayCount(ServiceUtil.retrieveXSDIntValue(jObj.getString("dayCount")));
+			params.setStartDate(ServiceUtil.retrieveXSDStringValue(jObj.getString("startDate")));
+			params.setMaxDayShifts(ServiceUtil.retrieveXSDIntValue(jObj.getString("maxDayShifts")));
+
+//			resp.setContentType("text/turtle");
+			
+			String pathToDB = this.getServletContext().getRealPath("/res/cottage_individuals.ttl");
+			ArrayList<BookingSuggestionResponse> bookingList = mediator.searchForResult(pathToDB, params);
+
+			// Generate RDG
+			Model rdgModel = RDGGenerator.generateSswapResources(params, bookingList);
+			try (PrintWriter out = resp.getWriter()) {
+				rdgModel.write(out, "TURTLE");
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -194,12 +194,13 @@ public class RDGGenerator {
 						model.createTypedLiteral(requestStartDate,
 								TypeMapper.getInstance().getTypeByName(XSD.date.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "maxDayShifts"),
-						model.createTypedLiteral(requestMaxDayShifts,
-								TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())));
+				.addProperty(model.createProperty(ontNS + "maxDayShifts"), model.createTypedLiteral(requestMaxDayShifts,
+						TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())));
 
 		// Using an enhanced for loop
 		for (BookingSuggestionResponse bookingSuggestion : bookingSuggestions) {
+			String responseCottageImageUrl = ServiceUtil.checkAndReturnString(bookingSuggestion.getCottageImageUrl());
+
 			Resource mapsToObject = model.createResource()
 					.addProperty(RDF.type, model.createResource(sswapNS + "Object"))
 					.addProperty(RDF.type, model.createResource(ontNS + "BookingServiceResponse"))
@@ -213,7 +214,7 @@ public class RDGGenerator {
 							model.createTypedLiteral(bookingSuggestion.getCottageAddress(),
 									TypeMapper.getInstance().getTypeByName(XSD.xstring.getURI())))
 					.addProperty(model.createProperty(ontNS + "cottageImageUrl"),
-							model.createTypedLiteral(bookingSuggestion.getCottageImageUrl(),
+							model.createTypedLiteral(responseCottageImageUrl,
 									TypeMapper.getInstance().getTypeByName(XSD.xstring.getURI())))
 					.addProperty(model.createProperty(ontNS + "numberOfPlaces"),
 							model.createTypedLiteral(bookingSuggestion.getNumberOfPlaces(),
