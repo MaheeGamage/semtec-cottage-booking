@@ -70,6 +70,9 @@ public class Booking extends HttpServlet {
 		// Convert the object to JSON using Gson
 		String json = new Gson().toJson(bookingList);
 
+		
+//		SswapConnector.sampleRequest();
+		
 		// Write JSON to the response output
 		PrintWriter out = response.getWriter();
 		out.print(json);
@@ -98,7 +101,7 @@ public class Booking extends HttpServlet {
 			params.setStartDate(request.getParameter("startDate"));
 			params.setMaxDayShifts(Integer.parseInt(request.getParameter("maxDayShifts")));
 
-			
+			SswapConnector.sampleRequest(params);
 			
 		}
 		
