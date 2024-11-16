@@ -1,13 +1,18 @@
 package com.example;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.riot.Lang;
+import org.apache.jena.riot.RDFDataMgr;
 
 public class SswapConnector {
 
@@ -52,7 +57,26 @@ public class SswapConnector {
 				reader.close();
 
 				// Print response body
-				System.out.println("Response Body: " + response.toString());
+//				System.out.println("Response Body: " + response.toString());
+				
+				// Convert response back to rdf model
+		        try {
+		            // Convert Turtle string to InputStream
+		            ByteArrayInputStream inputStream = new ByteArrayInputStream(response.toString().getBytes(StandardCharsets.UTF_8));
+
+		            // Create an empty Jena Model
+		            Model model = ModelFactory.createDefaultModel();
+
+		            // Read the Turtle content into the Model
+		            RDFDataMgr.read(model, inputStream, Lang.TURTLE);
+
+		            System.out.println("RDF Model Out");
+		            // Print the Model to verify
+		            model.write(System.out, "TURTLE");
+
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
 
 			} else {
 				System.out.println("Error sending request. Response Code: " + responseCode);
