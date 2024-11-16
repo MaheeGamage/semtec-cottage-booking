@@ -8,6 +8,8 @@ import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Map;
 
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -16,7 +18,9 @@ import org.apache.jena.riot.RDFDataMgr;
 
 public class SswapConnector {
 
-	public static void sampleRequest(RequestParams requestParams) {
+	public static ArrayList<BookingSuggestionResponse> sampleRequest(RequestParams requestParams) {
+		ArrayList<BookingSuggestionResponse> bookingList = new ArrayList<>();
+		
 		try {
 			// Define the target URL
 			URL url = new URL("http://localhost:8080/sswap-servlet/cottage");
@@ -70,9 +74,16 @@ public class SswapConnector {
 		            // Read the Turtle content into the Model
 		            RDFDataMgr.read(model, inputStream, Lang.TURTLE);
 
-		            System.out.println("RDF Model Out");
+//		            System.out.println("RDF Model Out");
 		            // Print the Model to verify
-		            model.write(System.out, "TURTLE");
+//		            model.write(System.out, "TURTLE");
+		            
+		            ArrayList<Map<String, String>> bookingData = ServiceUtil.extractBookingsFromRRG(model);
+		            
+		            
+		            for (Map<String, String> singleBookingDataMap : bookingData) {
+		            	bookingList.add(new BookingSuggestionResponse(singleBookingDataMap));
+		            }
 
 		        } catch (Exception e) {
 		            e.printStackTrace();
@@ -88,6 +99,8 @@ public class SswapConnector {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		return bookingList;
 	}
 
 }
