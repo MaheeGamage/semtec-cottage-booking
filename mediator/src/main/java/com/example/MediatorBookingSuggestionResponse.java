@@ -45,12 +45,12 @@ public class MediatorBookingSuggestionResponse {
 		
 		this.bookerName = data.getOrDefault("bookerName", null);
 		this.bookingNumber = data.getOrDefault("bookingNumber", null);
-		this.cottageAddress = data.getOrDefault("address", null);
+		this.cottageAddress = data.getOrDefault("cottageAddress", null);
 		this.cottageImageUrl = data.getOrDefault("cottageImageUrl", null);
 		this.numberOfPlaces = Integer.parseInt(maxPeopleNumericValueStr);
 		this.numberOfBedrooms = Integer.parseInt(bedroomsNumericValueStr);
 		this.distanceToLake = Integer.parseInt(distanceToLakeNumericValueStr);
-		this.nearestCity = data.getOrDefault("city", null);
+		this.nearestCity = data.getOrDefault("nearestCity", null);
 		this.distanceToCity = Integer.parseInt(distanceFromCityNumericValueStr);
 		this.bookingStartDate = data.getOrDefault("bookingStartDate", null);
 		this.bookingEndDate = data.getOrDefault("bookingEndDate", null);
