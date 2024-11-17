@@ -18,8 +18,8 @@ import org.apache.jena.riot.RDFDataMgr;
 
 public class SswapConnector {
 
-	public static ArrayList<BookingSuggestionResponse> retrieveDataFromSswap(RequestParams requestParams) {
-		ArrayList<BookingSuggestionResponse> bookingList = new ArrayList<>();
+	public static ArrayList<MediatorBookingSuggestionResponse> retrieveDataFromSswap(RequestParams requestParams) {
+		ArrayList<MediatorBookingSuggestionResponse> bookingList = new ArrayList<>();
 		
 		try {
 			// Define the target URL
@@ -78,11 +78,11 @@ public class SswapConnector {
 		            // Print the Model to verify
 //		            model.write(System.out, "TURTLE");
 		            
-		            ArrayList<Map<String, String>> bookingData = ServiceUtil.extractBookingsFromRRG(model);
+		            ArrayList<Map<String, String>> bookingData = MediatorServiceUtil.extractBookingsFromRRG(model);
 		            
 		            
 		            for (Map<String, String> singleBookingDataMap : bookingData) {
-		            	bookingList.add(new BookingSuggestionResponse(singleBookingDataMap));
+		            	bookingList.add(new MediatorBookingSuggestionResponse(singleBookingDataMap));
 		            }
 
 		        } catch (Exception e) {

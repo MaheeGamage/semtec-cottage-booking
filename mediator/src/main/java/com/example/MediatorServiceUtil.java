@@ -7,7 +7,7 @@ import java.util.Map;
 import org.apache.jena.rdf.model.*;
 import org.json.JSONObject;
 
-public class ServiceUtil {
+public class MediatorServiceUtil {
 
 	public static void printResource(Resource resource) {
 		StmtIterator statements = resource.listProperties();
@@ -191,9 +191,33 @@ public class ServiceUtil {
         while (properties.hasNext()) {
             Statement property = properties.nextStatement();
             String predicate = property.getPredicate().getLocalName();
-            String object = property.getObject().isLiteral()
-                    ? property.getObject().asLiteral().getString()
-                    : property.getObject().toString();
+//            String object = property.getObject().isLiteral()
+//                    ? property.getObject().asLiteral().getString()
+//                    : property.getObject().toString();
+            
+			String object = property.getObject().isLiteral() ? property.getObject().asLiteral().getValue().toString()
+					: property.getObject().toString();
+            
+            RDFNode node = property.getObject();
+            String objectVal = "";
+            
+//            if (node.isLiteral()) {
+//                Literal literal = node.asLiteral();
+//                Object value = literal.getValue(); // This gets the raw value
+//                System.out.println("Value: " + value);
+//                objectVal = value.toString();
+//
+//                // Alternatively, you can extract the value as a specific type
+//                try {
+//                    int number = literal.getInt(); // Assuming it's an integer
+//                    System.out.println("Extracted number: " + number);
+//                } catch (Exception e) {
+//                    System.out.println("Not an integer literal");
+//                }
+//            } else {
+//                System.out.println("RDFNode is not a literal.");
+//            }
+            
             data.put(predicate, object);
         }
         return data;

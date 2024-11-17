@@ -146,17 +146,17 @@ public class RDGGenerator {
 				.addProperty(sswapOneLineDescription, "A service that search available cottages")
 				.addProperty(sswapOperatesOn, graph);
 
-		String requestBookerName = ServiceUtil.checkAndReturnString(bookingRequest.getName());
-		String requestPeopleCount = ServiceUtil.checkAndReturnString(String.valueOf(bookingRequest.getNoOfPeople()));
-		String requestBedroomCount = ServiceUtil.checkAndReturnString(String.valueOf(bookingRequest.getBedroomCount()));
-		String requestMaxLakeDistance = ServiceUtil
+		String requestBookerName = MediatorServiceUtil.checkAndReturnString(bookingRequest.getName());
+		String requestPeopleCount = MediatorServiceUtil.checkAndReturnString(String.valueOf(bookingRequest.getNoOfPeople()));
+		String requestBedroomCount = MediatorServiceUtil.checkAndReturnString(String.valueOf(bookingRequest.getBedroomCount()));
+		String requestMaxLakeDistance = MediatorServiceUtil
 				.checkAndReturnString(String.valueOf(bookingRequest.getMaxLakeDistance()));
-		String requestNearestCity = ServiceUtil.checkAndReturnString(bookingRequest.getCity());
-		String requestMaxCityDsitance = ServiceUtil
+		String requestNearestCity = MediatorServiceUtil.checkAndReturnString(bookingRequest.getCity());
+		String requestMaxCityDsitance = MediatorServiceUtil
 				.checkAndReturnString(String.valueOf(bookingRequest.getMaxCityDistance()));
-		String requestDayCount = ServiceUtil.checkAndReturnString(String.valueOf(bookingRequest.getDayCount()));
-		String requestStartDate = ServiceUtil.checkAndReturnString(bookingRequest.getStartDate());
-		String requestMaxDayShifts = ServiceUtil.checkAndReturnString(String.valueOf(bookingRequest.getMaxDayShifts()));
+		String requestDayCount = MediatorServiceUtil.checkAndReturnString(String.valueOf(bookingRequest.getDayCount()));
+		String requestStartDate = MediatorServiceUtil.checkAndReturnString(bookingRequest.getStartDate());
+		String requestMaxDayShifts = MediatorServiceUtil.checkAndReturnString(String.valueOf(bookingRequest.getMaxDayShifts()));
 
 		// Create hasMapping subject
 		Resource subject = model.createResource().addProperty(RDF.type, model.createResource(sswapNS + "Subject"))

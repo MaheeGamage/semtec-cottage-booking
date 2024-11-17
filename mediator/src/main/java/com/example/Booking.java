@@ -40,9 +40,9 @@ public class Booking extends HttpServlet {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 
-		ArrayList<BookingSuggestionResponse> bookingList = new ArrayList<>();
+		ArrayList<MediatorBookingSuggestionResponse> bookingList = new ArrayList<>();
 		// Create a sample object to return as JSON
-		bookingList.add(new BookingSuggestionResponse("Alice Johnson", // name of the booker
+		bookingList.add(new MediatorBookingSuggestionResponse("Alice Johnson", // name of the booker
 				"BK-20241029-67890", // booking number
 				"456 Mountain View Drive", // address of the cottage
 				"http://example.com/mountain.jpg", // image of the cottage
@@ -54,7 +54,7 @@ public class Booking extends HttpServlet {
 				"2024-12-15", // booking start date
 				"2024-12-25" // booking end date
 		));
-		bookingList.add(new BookingSuggestionResponse("Robert Smith", // name of the booker
+		bookingList.add(new MediatorBookingSuggestionResponse("Robert Smith", // name of the booker
 				"BK-20241029-54321", // booking number
 				"789 Sunset Blvd", // address of the cottage
 				"http://example.com/sunset.jpg", // image of the cottage
@@ -89,7 +89,7 @@ public class Booking extends HttpServlet {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 
-		ArrayList<BookingSuggestionResponse> results = new ArrayList<>();
+		ArrayList<MediatorBookingSuggestionResponse> results = new ArrayList<>();
 
 		if (request.getParameter("reqType").toString().equals("doQuery")) {
 			RequestParams params = new RequestParams();

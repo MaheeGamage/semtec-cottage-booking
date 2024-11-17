@@ -5,7 +5,7 @@ import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
 
-public class BookingSuggestionResponse {
+public class MediatorBookingSuggestionResponse {
 	// Fields based on requirements
 	private String bookerName;
 	private String bookingNumber;
@@ -20,7 +20,7 @@ public class BookingSuggestionResponse {
 	private String bookingEndDate;
 
 	// Constructor
-	public BookingSuggestionResponse(String bookerName, String bookingNumber, String cottageAddress,
+	public MediatorBookingSuggestionResponse(String bookerName, String bookingNumber, String cottageAddress,
 			String cottageImageUrl, int numberOfPlaces, int numberOfBedrooms, int distanceToLake, String nearestCity,
 			int distanceToCity, String bookingStartDate, String bookingEndDate) {
 		this.bookerName = bookerName;
@@ -36,12 +36,12 @@ public class BookingSuggestionResponse {
 		this.bookingEndDate = bookingEndDate;
 	}
 
-	public BookingSuggestionResponse(Map<String, String> data) {
+	public MediatorBookingSuggestionResponse(Map<String, String> data) {
 		// Converting RDF values to java primitives
-        String maxPeopleNumericValueStr = data.getOrDefault("maxPeople", "0").split("\\^\\^")[0];
-        String bedroomsNumericValueStr = data.getOrDefault("bedrooms", "0").split("\\^\\^")[0];
-        String distanceToLakeNumericValueStr = data.getOrDefault("distanceFromLake", "0").split("\\^\\^")[0];
-        String distanceFromCityNumericValueStr = data.getOrDefault("distanceFromCity", "0").split("\\^\\^")[0];
+        String maxPeopleNumericValueStr = data.getOrDefault("numberOfPlaces", "0").split("\\^\\^")[0];
+        String bedroomsNumericValueStr = data.getOrDefault("numberOfBedrooms", "0").split("\\^\\^")[0];
+        String distanceToLakeNumericValueStr = data.getOrDefault("distanceToLake", "0").split("\\^\\^")[0];
+        String distanceFromCityNumericValueStr = data.getOrDefault("distanceToCity", "0").split("\\^\\^")[0];
 		
 		this.bookerName = data.getOrDefault("bookerName", null);
 		this.bookingNumber = data.getOrDefault("bookingNumber", null);
