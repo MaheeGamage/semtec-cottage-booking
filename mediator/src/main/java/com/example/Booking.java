@@ -103,7 +103,7 @@ public class Booking extends HttpServlet {
 			params.setStartDate(request.getParameter("startDate"));
 			params.setMaxDayShifts(Integer.parseInt(request.getParameter("maxDayShifts")));
 
-			results = SswapConnector.sampleRequest(params);
+			results = SswapConnector.retrieveDataFromSswap(params);
 			
 		}
 		

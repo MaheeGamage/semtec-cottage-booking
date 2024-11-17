@@ -190,7 +190,7 @@ public class ServiceUtil {
         StmtIterator properties = resource.listProperties();
         while (properties.hasNext()) {
             Statement property = properties.nextStatement();
-            String predicate = property.getPredicate().getURI();
+            String predicate = property.getPredicate().getLocalName();
             String object = property.getObject().isLiteral()
                     ? property.getObject().asLiteral().getString()
                     : property.getObject().toString();

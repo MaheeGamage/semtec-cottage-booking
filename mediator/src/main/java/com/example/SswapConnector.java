@@ -18,7 +18,7 @@ import org.apache.jena.riot.RDFDataMgr;
 
 public class SswapConnector {
 
-	public static ArrayList<BookingSuggestionResponse> sampleRequest(RequestParams requestParams) {
+	public static ArrayList<BookingSuggestionResponse> retrieveDataFromSswap(RequestParams requestParams) {
 		ArrayList<BookingSuggestionResponse> bookingList = new ArrayList<>();
 		
 		try {
