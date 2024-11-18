@@ -63,18 +63,19 @@ function doQuery_back(result) {
 			bookingDiv.classList.add('booking');
 
 			bookingDiv.innerHTML = `
-				<p>Name of the Booker: ${booking.bookerName}</p>
-                <p>Booking Number: ${booking.bookingNumber}</p>
-                <p>Address: ${booking.cottageAddress}</p>
-                <img src="${booking.cottageImageUrl}" alt="Cottage Image">
-                <p>Number of Places: ${booking.numberOfPlaces}</p>
-                <p>Number of Bedrooms: ${booking.numberOfBedrooms}</p>
-                <p>Distance to Lake: ${booking.distanceToLake} meters</p>
-                <p>Nearest City: ${booking.nearestCity}</p>
-                <p>Distance to City: ${booking.distanceToCity} km</p>
-                <p>Booking Start Date: ${booking.bookingStartDate}</p>
-                <p>Booking End Date: ${booking.bookingEndDate}</p>
-				<p>------------------------</p>
+				<img src="${booking.cottageImageUrl}" alt="Cottage Image">			
+				<div class="details">
+					<p><strong>Name of the Booker:</strong> ${booking.bookerName}</p>
+	                <p><strong>Booking Number:</strong> ${booking.bookingNumber}</p>
+	                <p><strong>Address:</strong> ${booking.cottageAddress}</p>	                
+	                <p><strong>Number of Places:</strong> ${booking.numberOfPlaces}</p>
+	                <p><strong>Number of Bedrooms:</strong> ${booking.numberOfBedrooms}</p>
+	                <p><strong>Distance to Lake:</strong> ${booking.distanceToLake} meters</p>
+	                <p><strong>Nearest City:</strong> ${booking.nearestCity}</p>
+	                <p><strong>Distance to City:</strong> ${booking.distanceToCity} km</p>
+	                <p><strong>Booking Start Date:</strong> ${booking.bookingStartDate}</p>
+	                <p><strong>Booking End Date:</strong> ${booking.bookingEndDate}</p>
+				</div>
             `;
 
 			container.appendChild(bookingDiv);
@@ -83,8 +84,3 @@ function doQuery_back(result) {
 		alert('Error: ' + error.message);
 	}
 }
-
-
-
-
-

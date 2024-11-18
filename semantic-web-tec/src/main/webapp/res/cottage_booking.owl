@@ -166,6 +166,12 @@ xsd:date rdf:type rdfs:Datatype .
               rdfs:range xsd:date .
 
 
+###  http://localhost:8080/SW_project/cottagebooking#hasImageURL
+:hasImageURL rdf:type owl:DatatypeProperty ;
+             rdfs:domain :Cottage ;
+             rdfs:range xsd:string .
+             
+
 #################################################################
 #    Classes
 #################################################################
