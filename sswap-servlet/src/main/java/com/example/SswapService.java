@@ -64,6 +64,7 @@ public class SswapService extends HttpServlet {
 		try (InputStream inputStream = req.getInputStream()) {
 			ontModel.read(inputStream, null, "TURTLE");
 		} catch (Exception e) {
+			e.printStackTrace();
 			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			resp.getWriter().write("{\"error\": \"Invalid RDF format\"}");
 			return;
