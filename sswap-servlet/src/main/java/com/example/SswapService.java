@@ -40,8 +40,8 @@ public class SswapService extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Set content type to RDF
-//		response.setContentType("application/rdf+xml");
-		response.setContentType("text/turtle");
+		response.setContentType("application/rdf+xml");
+//		response.setContentType("text/turtle");
 
 		RequestParams params = new RequestParams();
 		ArrayList<BookingSuggestionResponse> responseList =  new ArrayList<BookingSuggestionResponse>();
@@ -61,22 +61,24 @@ public class SswapService extends HttpServlet {
 		// Generate RDG
 		Model rdgModel = RDGGenerator.generateSswapResources(new RequestParams(), responseList);
 		try (PrintWriter out = response.getWriter()) {
-//            rdgModel.write(out, "RDF/XML");
-			rdgModel.write(out, "TURTLE");
+            rdgModel.write(out, "RDF/XML");
+//			rdgModel.write(out, "TURTLE");
 		}
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// Set response type
-		resp.setContentType("text/turtle");
+		resp.setContentType("application/rdf+xml");
+//		resp.setContentType("text/turtle");
 		
 		SWDB mediator = new SWDB();
 
 		// Read RDF content from the POST body
 		Model ontModel = ModelFactory.createDefaultModel();
 		try (InputStream inputStream = req.getInputStream()) {
-			ontModel.read(inputStream, null, "TURTLE");
+//			ontModel.read(inputStream, null, "TURTLE");
+			ontModel.read(inputStream, null, "RDF/XML");
 		} catch (Exception e) {
 			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			resp.getWriter().write("{\"error\": \"Invalid RDF format\"}");
@@ -107,7 +109,7 @@ public class SswapService extends HttpServlet {
 			// Generate RDG
 			Model rdgModel = RDGGenerator.generateSswapResources(params, bookingList);
 			try (PrintWriter out = resp.getWriter()) {
-				rdgModel.write(out, "TURTLE");
+				rdgModel.write(out, "RDF/XML");
 			}
 
 		} catch (Exception e) {
