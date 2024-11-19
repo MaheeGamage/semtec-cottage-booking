@@ -33,7 +33,7 @@ public class SswapConnector {
 			connection.setRequestProperty("Content-Type", "text/turtle");
 			connection.setDoOutput(true);
 
-			Model rdgModel = RDGGenerator.generateRequestSswapResources(requestParams);
+			Model rdgModel = MediatorRDGGenerator.generateRequestSswapResources(requestParams);
 			StringWriter modelOutput = new StringWriter();
 			rdgModel.write(modelOutput, "TURTLE");
 			String turtleData = modelOutput.toString();

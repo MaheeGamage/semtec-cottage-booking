@@ -14,7 +14,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class RDGGenerator {
+public class MediatorRDGGenerator {
 
 	// Namespaces for SSWAP and your custom service properties
 	private static final String SSWAP_NAMESPACE = "http://sswapmeet.sswap.info/owl/sswap#";
@@ -152,7 +152,7 @@ public class RDGGenerator {
 		String requestMaxLakeDistance = MediatorServiceUtil
 				.checkAndReturnString(String.valueOf(bookingRequest.getMaxLakeDistance()));
 		String requestNearestCity = MediatorServiceUtil.checkAndReturnString(bookingRequest.getCity());
-		String requestMaxCityDsitance = MediatorServiceUtil
+		String requestMaxCityDistance = MediatorServiceUtil
 				.checkAndReturnString(String.valueOf(bookingRequest.getMaxCityDistance()));
 		String requestDayCount = MediatorServiceUtil.checkAndReturnString(String.valueOf(bookingRequest.getDayCount()));
 		String requestStartDate = MediatorServiceUtil.checkAndReturnString(bookingRequest.getStartDate());
@@ -161,39 +161,39 @@ public class RDGGenerator {
 		// Create hasMapping subject
 		Resource subject = model.createResource().addProperty(RDF.type, model.createResource(sswapNS + "Subject"))
 				.addProperty(RDF.type, model.createResource(ontNS + "BookingServiceRequest"))
-				.addProperty(model.createProperty(ontNS + "bookerName"),
+				.addProperty(model.createProperty(ontNS + "requestBookerName"),
 						model.createTypedLiteral(requestBookerName,
 								TypeMapper.getInstance().getTypeByName(XSD.xstring.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "peopleCount"),
+				.addProperty(model.createProperty(ontNS + "requestPeopleCount"),
 						model.createTypedLiteral(requestPeopleCount,
 								TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "bedroomCount"),
+				.addProperty(model.createProperty(ontNS + "requestBedroomCount"),
 						model.createTypedLiteral(requestBedroomCount,
 								TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "maxLakeDistance"),
+				.addProperty(model.createProperty(ontNS + "requestMaxLakeDistance"),
 						model.createTypedLiteral(requestMaxLakeDistance,
 								TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "nearestCity"),
+				.addProperty(model.createProperty(ontNS + "requestNearestCity"),
 						model.createTypedLiteral(requestNearestCity,
 								TypeMapper.getInstance().getTypeByName(XSD.xstring.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "maxCityDistance"),
-						model.createTypedLiteral(requestMaxCityDsitance,
+				.addProperty(model.createProperty(ontNS + "requestMaxCityDistance"),
+						model.createTypedLiteral(requestMaxCityDistance,
 								TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "dayCount"),
+				.addProperty(model.createProperty(ontNS + "requestDayCount"),
 						model.createTypedLiteral(requestDayCount,
 								TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "startDate"),
+				.addProperty(model.createProperty(ontNS + "requestStartDate"),
 						model.createTypedLiteral(requestStartDate,
 								TypeMapper.getInstance().getTypeByName(XSD.date.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "maxDayShifts"), model.createTypedLiteral(requestMaxDayShifts,
+				.addProperty(model.createProperty(ontNS + "requestMaxDayShifts"), model.createTypedLiteral(requestMaxDayShifts,
 						TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())));
 
 		// Create mapsTo object
