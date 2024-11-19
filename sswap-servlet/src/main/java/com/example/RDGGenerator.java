@@ -215,7 +215,7 @@ public class RDGGenerator {
 									TypeMapper.getInstance().getTypeByName(XSD.xstring.getURI())))
 					.addProperty(model.createProperty(ontNS + "responseCottageImageUrl"),
 							model.createTypedLiteral(responseCottageImageUrl,
-									TypeMapper.getInstance().getTypeByName(XSD.xstring.getURI())))
+									TypeMapper.getInstance().getTypeByName(XSD.anyURI.getURI())))
 					.addProperty(model.createProperty(ontNS + "responseNumberOfPlaces"),
 							model.createTypedLiteral(bookingSuggestion.getNumberOfPlaces(),
 									TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())))

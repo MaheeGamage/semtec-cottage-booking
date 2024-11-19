@@ -26,7 +26,7 @@
         ont:responseBookerName ""^^xsd:string ;
         ont:responseBookingNumber ""^^xsd:string ;
         ont:responseCottageAddress " Lakeview Street, Jyvaskyla"^^xsd:string ;
-        ont:responseCottageImageUrl ""^^xsd:string ; #try url related data type
+        ont:responseCottageImageUrl ""^^xsd:anyURI ;
         ont:responseNumberOfPlaces ""^^xsd:integer ;
         ont:responseNumberOfBedrooms ""^^xsd:integer ;
         ont:responseDistanceToLake ""^^xsd:integer ;
