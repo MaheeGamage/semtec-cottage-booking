@@ -11,7 +11,8 @@ cb:cottage1 rdf:type cb:Cottage ;
     cb:hasNumberOfBedrooms 2 ;
     cb:hasDistanceFromLake 100 ;
     cb:hasAddress "123 Lakeview Street, Jyvaskyla" ;
-    cb:isLocatedAt cb:location1 .
+    cb:isLocatedAt cb:location1 ;
+    cb:hasImageURL "http://users.jyu.fi/~mktvijit/riihilinna-ski-lodge.jpg" .
 
 cb:cottage2 rdf:type cb:Cottage ;
     cb:hasCottageName "Lakeside Haven" ;
@@ -19,7 +20,8 @@ cb:cottage2 rdf:type cb:Cottage ;
     cb:hasNumberOfBedrooms 3 ;
     cb:hasDistanceFromLake 50 ;
     cb:hasAddress "456 Woodland Avenue, Jyvaskyla" ;
-    cb:isLocatedAt cb:location1 .
+    cb:isLocatedAt cb:location1 ;
+    cb:hasImageURL "http://users.jyu.fi/~mktvijit/lakeside-haven.jpg" .
 	
 cb:cottage3 rdf:type cb:Cottage ;
     cb:hasCottageName "Villa Tammikko" ;
@@ -27,7 +29,8 @@ cb:cottage3 rdf:type cb:Cottage ;
     cb:hasNumberOfBedrooms 3 ;
     cb:hasDistanceFromLake 300 ;
     cb:hasAddress "456 Forest Drive, Helsinki" ;
-    cb:isLocatedAt cb:location2 .
+    cb:isLocatedAt cb:location2 ;
+    cb:hasImageURL "http://users.jyu.fi/~mktvijit/villa-tammikko.jpg" .
 
 cb:cottage4 rdf:type cb:Cottage ;
     cb:hasCottageName "Villa Gaia" ;
@@ -35,7 +38,8 @@ cb:cottage4 rdf:type cb:Cottage ;
     cb:hasNumberOfBedrooms 4 ;
     cb:hasDistanceFromLake 500 ;
     cb:hasAddress "789 Mountain Road, Tampere" ;
-    cb:isLocatedAt cb:location3 .
+    cb:isLocatedAt cb:location3 ;
+    cb:hasImageURL "http://users.jyu.fi/~mktvijit/villa-gaia.jpg" .
 
 cb:cottage5 rdf:type cb:Cottage ;
     cb:hasCottageName "Tampere Cozy Retreat" ;
@@ -43,7 +47,8 @@ cb:cottage5 rdf:type cb:Cottage ;
     cb:hasNumberOfBedrooms 6 ;
     cb:hasDistanceFromLake 200 ;
     cb:hasAddress "789 Birch Road, Tampere" ;
-    cb:isLocatedAt cb:location3 .
+    cb:isLocatedAt cb:location3 ;
+    cb:hasImageURL "http://users.jyu.fi/~mktvijit/tampere-cozy-retreat.jpg" .
 	
 cb:cottage6 rdf:type cb:Cottage ;
     cb:hasCottageName "Cozy and Spacious Row House" ;
@@ -51,7 +56,8 @@ cb:cottage6 rdf:type cb:Cottage ;
     cb:hasNumberOfBedrooms 2 ;
     cb:hasDistanceFromLake 200 ;
     cb:hasAddress "101 River Street, Turku" ;
-    cb:isLocatedAt cb:location4 .
+    cb:isLocatedAt cb:location4 ;
+    cb:hasImageURL "http://users.jyu.fi/~mktvijit/cozy-spacious-row-house.jpg" .
 
 cb:cottage rdf:type cb:Cottage ;
     cb:hasCottageName "Mökki in Kalkkinen" ;
@@ -59,7 +65,8 @@ cb:cottage rdf:type cb:Cottage ;
     cb:hasNumberOfBedrooms 5 ;
     cb:hasDistanceFromLake 50 ;
     cb:hasAddress "202 Hilltop Lane, Lahti" ;
-    cb:isLocatedAt cb:location5 .
+    cb:isLocatedAt cb:location5 ;
+    cb:hasImageURL "http://users.jyu.fi/~mktvijit/mokki-kalkkinen.jpg" .
 	
 
 # Location details

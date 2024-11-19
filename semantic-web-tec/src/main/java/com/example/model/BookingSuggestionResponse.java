@@ -21,12 +21,12 @@ public class BookingSuggestionResponse {
 
 	// Constructor
 	public BookingSuggestionResponse(String bookerName, String bookingNumber, String cottageAddress,
-			String cottageImageUrl, int numberOfPlaces, int numberOfBedrooms, int distanceToLake, String nearestCity,
+			String imageURL, int numberOfPlaces, int numberOfBedrooms, int distanceToLake, String nearestCity,
 			int distanceToCity, String bookingStartDate, String bookingEndDate) {
 		this.bookerName = bookerName;
 		this.bookingNumber = bookingNumber;
 		this.cottageAddress = cottageAddress;
-		this.cottageImageUrl = cottageImageUrl;
+		this.cottageImageUrl = imageURL;
 		this.numberOfPlaces = numberOfPlaces;
 		this.numberOfBedrooms = numberOfBedrooms;
 		this.distanceToLake = distanceToLake;
@@ -46,7 +46,7 @@ public class BookingSuggestionResponse {
 		this.bookerName = data.getOrDefault("bookerName", null);
 		this.bookingNumber = data.getOrDefault("bookingNumber", null);
 		this.cottageAddress = data.getOrDefault("address", null);
-		this.cottageImageUrl = data.getOrDefault("cottageImageUrl", null);
+		this.cottageImageUrl = data.getOrDefault("imageURL", null);
 		this.numberOfPlaces = Integer.parseInt(maxPeopleNumericValueStr);
 		this.numberOfBedrooms = Integer.parseInt(bedroomsNumericValueStr);
 		this.distanceToLake = Integer.parseInt(distanceToLakeNumericValueStr);
@@ -85,8 +85,8 @@ public class BookingSuggestionResponse {
 		return cottageImageUrl;
 	}
 
-	public void setCottageImageUrl(String cottageImageUrl) {
-		this.cottageImageUrl = cottageImageUrl;
+	public void setCottageImageUrl(String imageURL) {
+		this.cottageImageUrl = imageURL;
 	}
 
 	public int getNumberOfPlaces() {
