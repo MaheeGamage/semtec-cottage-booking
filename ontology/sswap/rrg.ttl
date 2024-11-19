@@ -26,14 +26,14 @@
         ont:responseBookerName "Jhon"^^xsd:string ;
         ont:responseBookingNumber "1001"^^xsd:string ;
         ont:responseCottageAddress "123 Lakeview Street, Jyvaskyla"^^xsd:string ;
-        ont:responseCottageImageUrl "http://localhost:8080/booking/res/images/ctg1.jpg"^^xsd:string ; #try url related data type
+        ont:responseCottageImageUrl "http://localhost:8080/booking/res/images/ctg1.jpg"^^xsd:anyURI ;
         ont:responseNumberOfPlaces "4"^^xsd:integer ;
         ont:responseNumberOfBedrooms "2"^^xsd:integer ;
         ont:responseDistanceToLake "100"^^xsd:integer ;
         ont:responseNearestCity "Jyvaskyla"^^xsd:string ;
         ont:responseDistanceToCity "10"^^xsd:integer ;
-        ont:requestBookingStartDate "2024-11-05"^^xsd:date ;
-        ont:requestBookingEndDate "2024-11-08"^^xsd:date
+        ont:responseBookingStartDate "2024-11-05"^^xsd:date ;
+        ont:responseBookingEndDate "2024-11-08"^^xsd:date
       ]
     ]
   ] .

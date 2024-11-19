@@ -38,22 +38,22 @@ public class MediatorBookingSuggestionResponse {
 
 	public MediatorBookingSuggestionResponse(Map<String, String> data) {
 		// Converting RDF values to java primitives
-        String maxPeopleNumericValueStr = data.getOrDefault("numberOfPlaces", "0").split("\\^\\^")[0];
-        String bedroomsNumericValueStr = data.getOrDefault("numberOfBedrooms", "0").split("\\^\\^")[0];
-        String distanceToLakeNumericValueStr = data.getOrDefault("distanceToLake", "0").split("\\^\\^")[0];
-        String distanceFromCityNumericValueStr = data.getOrDefault("distanceToCity", "0").split("\\^\\^")[0];
+        String maxPeopleNumericValueStr = data.getOrDefault("responseNumberOfPlaces", "0").split("\\^\\^")[0];
+        String bedroomsNumericValueStr = data.getOrDefault("responseNumberOfBedrooms", "0").split("\\^\\^")[0];
+        String distanceToLakeNumericValueStr = data.getOrDefault("responseDistanceToLake", "0").split("\\^\\^")[0];
+        String distanceFromCityNumericValueStr = data.getOrDefault("responseDistanceToCity", "0").split("\\^\\^")[0];
 		
-		this.bookerName = data.getOrDefault("bookerName", null);
-		this.bookingNumber = data.getOrDefault("bookingNumber", null);
-		this.cottageAddress = data.getOrDefault("cottageAddress", null);
-		this.cottageImageUrl = data.getOrDefault("cottageImageUrl", null);
+		this.bookerName = data.getOrDefault("responseBookerName", null);
+		this.bookingNumber = data.getOrDefault("responseBookingNumber", null);
+		this.cottageAddress = data.getOrDefault("responseCottageAddress", null);
+		this.cottageImageUrl = data.getOrDefault("responseCottageImageUrl", null);
 		this.numberOfPlaces = Integer.parseInt(maxPeopleNumericValueStr);
 		this.numberOfBedrooms = Integer.parseInt(bedroomsNumericValueStr);
 		this.distanceToLake = Integer.parseInt(distanceToLakeNumericValueStr);
-		this.nearestCity = data.getOrDefault("nearestCity", null);
+		this.nearestCity = data.getOrDefault("responseNearestCity", null);
 		this.distanceToCity = Integer.parseInt(distanceFromCityNumericValueStr);
-		this.bookingStartDate = data.getOrDefault("bookingStartDate", null);
-		this.bookingEndDate = data.getOrDefault("bookingEndDate", null);
+		this.bookingStartDate = data.getOrDefault("responseBookingStartDate", null);
+		this.bookingEndDate = data.getOrDefault("responseBookingEndDate", null);
 	}
 
 	// Getters and Setters

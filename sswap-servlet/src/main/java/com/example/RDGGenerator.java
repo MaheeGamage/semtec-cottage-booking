@@ -153,7 +153,7 @@ public class RDGGenerator {
 		String requestMaxLakeDistance = ServiceUtil
 				.checkAndReturnString(String.valueOf(bookingRequest.getMaxLakeDistance()));
 		String requestNearestCity = ServiceUtil.checkAndReturnString(bookingRequest.getCity());
-		String requestMaxCityDsitance = ServiceUtil
+		String requestMaxCityDistance = ServiceUtil
 				.checkAndReturnString(String.valueOf(bookingRequest.getMaxCityDistance()));
 		String requestDayCount = ServiceUtil.checkAndReturnString(String.valueOf(bookingRequest.getDayCount()));
 		String requestStartDate = ServiceUtil.checkAndReturnString(bookingRequest.getStartDate());
@@ -162,39 +162,39 @@ public class RDGGenerator {
 		// Create hasMapping subject
 		Resource subject = model.createResource().addProperty(RDF.type, model.createResource(sswapNS + "Subject"))
 				.addProperty(RDF.type, model.createResource(ontNS + "BookingServiceRequest"))
-				.addProperty(model.createProperty(ontNS + "bookerName"),
+				.addProperty(model.createProperty(ontNS + "requestBookerName"),
 						model.createTypedLiteral(requestBookerName,
 								TypeMapper.getInstance().getTypeByName(XSD.xstring.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "peopleCount"),
+				.addProperty(model.createProperty(ontNS + "requestPeopleCount"),
 						model.createTypedLiteral(requestPeopleCount,
 								TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "bedroomCount"),
+				.addProperty(model.createProperty(ontNS + "requestBedroomCount"),
 						model.createTypedLiteral(requestBedroomCount,
 								TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "maxLakeDistance"),
+				.addProperty(model.createProperty(ontNS + "requestMaxLakeDistance"),
 						model.createTypedLiteral(requestMaxLakeDistance,
 								TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "nearestCity"),
+				.addProperty(model.createProperty(ontNS + "requestNearestCity"),
 						model.createTypedLiteral(requestNearestCity,
 								TypeMapper.getInstance().getTypeByName(XSD.xstring.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "maxCityDistance"),
-						model.createTypedLiteral(requestMaxCityDsitance,
+				.addProperty(model.createProperty(ontNS + "requestMaxCityDistance"),
+						model.createTypedLiteral(requestMaxCityDistance,
 								TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "dayCount"),
+				.addProperty(model.createProperty(ontNS + "requestDayCount"),
 						model.createTypedLiteral(requestDayCount,
 								TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "startDate"),
+				.addProperty(model.createProperty(ontNS + "requestStartDate"),
 						model.createTypedLiteral(requestStartDate,
 								TypeMapper.getInstance().getTypeByName(XSD.date.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "maxDayShifts"), model.createTypedLiteral(requestMaxDayShifts,
+				.addProperty(model.createProperty(ontNS + "requestMaxDayShifts"), model.createTypedLiteral(requestMaxDayShifts,
 						TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())));
 
 		// Using an enhanced for loop
@@ -204,37 +204,37 @@ public class RDGGenerator {
 			Resource mapsToObject = model.createResource()
 					.addProperty(RDF.type, model.createResource(sswapNS + "Object"))
 					.addProperty(RDF.type, model.createResource(ontNS + "BookingServiceResponse"))
-					.addProperty(model.createProperty(ontNS + "bookerName"),
+					.addProperty(model.createProperty(ontNS + "responseBookerName"),
 							model.createTypedLiteral(bookingSuggestion.getBookerName(),
 									TypeMapper.getInstance().getTypeByName(XSD.xstring.getURI())))
-					.addProperty(model.createProperty(ontNS + "bookingNumber"),
+					.addProperty(model.createProperty(ontNS + "responseBookingNumber"),
 							model.createTypedLiteral(bookingSuggestion.getBookingNumber(),
 									TypeMapper.getInstance().getTypeByName(XSD.xstring.getURI())))
-					.addProperty(model.createProperty(ontNS + "cottageAddress"),
+					.addProperty(model.createProperty(ontNS + "responseCottageAddress"),
 							model.createTypedLiteral(bookingSuggestion.getCottageAddress(),
 									TypeMapper.getInstance().getTypeByName(XSD.xstring.getURI())))
-					.addProperty(model.createProperty(ontNS + "cottageImageUrl"),
+					.addProperty(model.createProperty(ontNS + "responseCottageImageUrl"),
 							model.createTypedLiteral(responseCottageImageUrl,
-									TypeMapper.getInstance().getTypeByName(XSD.xstring.getURI())))
-					.addProperty(model.createProperty(ontNS + "numberOfPlaces"),
+									TypeMapper.getInstance().getTypeByName(XSD.anyURI.getURI())))
+					.addProperty(model.createProperty(ontNS + "responseNumberOfPlaces"),
 							model.createTypedLiteral(bookingSuggestion.getNumberOfPlaces(),
 									TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())))
-					.addProperty(model.createProperty(ontNS + "numberOfBedrooms"),
+					.addProperty(model.createProperty(ontNS + "responseNumberOfBedrooms"),
 							model.createTypedLiteral(bookingSuggestion.getNumberOfBedrooms(),
 									TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())))
-					.addProperty(model.createProperty(ontNS + "distanceToLake"),
+					.addProperty(model.createProperty(ontNS + "responseDistanceToLake"),
 							model.createTypedLiteral(bookingSuggestion.getDistanceToLake(),
 									TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())))
-					.addProperty(model.createProperty(ontNS + "nearestCity"),
+					.addProperty(model.createProperty(ontNS + "responseNearestCity"),
 							model.createTypedLiteral(bookingSuggestion.getNearestCity(),
 									TypeMapper.getInstance().getTypeByName(XSD.xstring.getURI())))
-					.addProperty(model.createProperty(ontNS + "distanceToCity"),
+					.addProperty(model.createProperty(ontNS + "responseDistanceToCity"),
 							model.createTypedLiteral(bookingSuggestion.getDistanceToCity(),
 									TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())))
-					.addProperty(model.createProperty(ontNS + "bookingStartDate"),
+					.addProperty(model.createProperty(ontNS + "responseBookingStartDate"),
 							model.createTypedLiteral(bookingSuggestion.getBookingStartDate(),
 									TypeMapper.getInstance().getTypeByName(XSD.date.getURI())))
-					.addProperty(model.createProperty(ontNS + "bookingEndDate"),
+					.addProperty(model.createProperty(ontNS + "responseBookingEndDate"),
 							model.createTypedLiteral(bookingSuggestion.getBookingEndDate(),
 									TypeMapper.getInstance().getTypeByName(XSD.date.getURI())));
 

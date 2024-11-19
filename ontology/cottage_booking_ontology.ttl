@@ -89,6 +89,12 @@ xsd:date rdf:type rdfs:Datatype .
                   rdfs:range xsd:string .
 
 
+###  http://localhost:8080/SW_project/cottagebooking#hasCottageImageUrl
+:hasCottageImageUrl rdf:type owl:DatatypeProperty ;
+                    rdfs:domain :Cottage ;
+                    rdfs:range xsd:anyURI .
+
+
 ###  http://localhost:8080/SW_project/cottagebooking#hasCottageName
 :hasCottageName rdf:type owl:DatatypeProperty ;
                 rdfs:domain :Cottage ;
@@ -197,18 +203,6 @@ xsd:date rdf:type rdfs:Datatype .
                    rdfs:range xsd:string .
 
 
-###  http://localhost:8080/SW_project/cottagebooking#requestBookingEndDate
-:requestBookingEndDate rdf:type owl:DatatypeProperty ;
-                       rdfs:domain :BookingServiceResponse ;
-                       rdfs:range xsd:date .
-
-
-###  http://localhost:8080/SW_project/cottagebooking#requestBookingStartDate
-:requestBookingStartDate rdf:type owl:DatatypeProperty ;
-                         rdfs:domain :BookingServiceResponse ;
-                         rdfs:range xsd:date .
-
-
 ###  http://localhost:8080/SW_project/cottagebooking#requestDayCount
 :requestDayCount rdf:type owl:DatatypeProperty ;
                  rdfs:domain :BookingServiceRequest ;
@@ -257,10 +251,22 @@ xsd:date rdf:type rdfs:Datatype .
                     rdfs:range xsd:string .
 
 
+###  http://localhost:8080/SW_project/cottagebooking#responseBookingEndDate
+:responseBookingEndDate rdf:type owl:DatatypeProperty ;
+                        rdfs:domain :BookingServiceResponse ;
+                        rdfs:range xsd:date .
+
+
 ###  http://localhost:8080/SW_project/cottagebooking#responseBookingNumber
 :responseBookingNumber rdf:type owl:DatatypeProperty ;
                        rdfs:domain :BookingServiceResponse ;
                        rdfs:range xsd:string .
+
+
+###  http://localhost:8080/SW_project/cottagebooking#responseBookingStartDate
+:responseBookingStartDate rdf:type owl:DatatypeProperty ;
+                          rdfs:domain :BookingServiceResponse ;
+                          rdfs:range xsd:date .
 
 
 ###  http://localhost:8080/SW_project/cottagebooking#responseCottageAddress
@@ -436,10 +442,10 @@ xsd:date rdf:type rdfs:Datatype .
 ###  http://localhost:8080/SW_project/cottagebooking#bookingServiceResponse1
 :bookingServiceResponse1 rdf:type owl:NamedIndividual ,
                                   :BookingServiceResponse ;
-                         :requestBookingEndDate "2024-11-08"^^xsd:date ;
-                         :requestBookingStartDate "2024-11-05"^^xsd:date ;
                          :responseBookerName "Jhon 1" ;
+                         :responseBookingEndDate "2024-11-08"^^xsd:date ;
                          :responseBookingNumber "1001" ;
+                         :responseBookingStartDate "2024-11-05"^^xsd:date ;
                          :responseCottageAddress "123 Lakeview Street, Jyvaskyla" ;
                          :responseCottageImageUrl "http://localhost:8080/booking/res/images/ctg1.jpg" ;
                          :responseDistanceToCity 10 ;
@@ -465,6 +471,7 @@ xsd:date rdf:type rdfs:Datatype .
                    :Cottage ;
           :isLocatedAt :location1 ;
           :hasAddress "123 Lakeview Street, Jyvaskyla" ;
+          :hasCottageImageUrl "https://media.istockphoto.com/id/471826199/photo/french-brittany-typical-house.jpg?s=612x612&w=0&k=20&c=Izy6Ms8WytO21jJ2gtuUlylIDl38TMgZYcFZTncFAcM=" ;
           :hasCottageName "Riihilinna Ski Lodge" ;
           :hasDistanceFromLake 100 ;
           :hasMaxNumberOfPeople 4 ;
@@ -479,6 +486,7 @@ xsd:date rdf:type rdfs:Datatype .
           :hasCottageName "Lakeside Haven" ;
           :hasDistanceFromLake 50 ;
           :hasMaxNumberOfPeople 6 ;
+          :hasCottageImageUrl "https://media.istockphoto.com/id/471826199/photo/french-brittany-typical-house.jpg?s=612x612&w=0&k=20&c=Izy6Ms8WytO21jJ2gtuUlylIDl38TMgZYcFZTncFAcM=" ;
           :hasNumberOfBedrooms 3 .
 
 
@@ -490,6 +498,7 @@ xsd:date rdf:type rdfs:Datatype .
           :hasCottageName "Villa Tammikko" ;
           :hasDistanceFromLake 300 ;
           :hasMaxNumberOfPeople 6 ;
+          :hasCottageImageUrl "https://media.istockphoto.com/id/471826199/photo/french-brittany-typical-house.jpg?s=612x612&w=0&k=20&c=Izy6Ms8WytO21jJ2gtuUlylIDl38TMgZYcFZTncFAcM=" ;
           :hasNumberOfBedrooms 3 .
 
 
@@ -501,6 +510,7 @@ xsd:date rdf:type rdfs:Datatype .
           :hasCottageName "Villa Gaia" ;
           :hasDistanceFromLake 500 ;
           :hasMaxNumberOfPeople 8 ;
+          :hasCottageImageUrl "https://media.istockphoto.com/id/471826199/photo/french-brittany-typical-house.jpg?s=612x612&w=0&k=20&c=Izy6Ms8WytO21jJ2gtuUlylIDl38TMgZYcFZTncFAcM=" ;
           :hasNumberOfBedrooms 4 .
 
 
@@ -512,6 +522,7 @@ xsd:date rdf:type rdfs:Datatype .
           :hasCottageName "Tampere Cozy Retreat" ;
           :hasDistanceFromLake 200 ;
           :hasMaxNumberOfPeople 12 ;
+          :hasCottageImageUrl "https://media.istockphoto.com/id/471826199/photo/french-brittany-typical-house.jpg?s=612x612&w=0&k=20&c=Izy6Ms8WytO21jJ2gtuUlylIDl38TMgZYcFZTncFAcM=" ;
           :hasNumberOfBedrooms 6 .
 
 
@@ -523,6 +534,7 @@ xsd:date rdf:type rdfs:Datatype .
           :hasCottageName "Cozy and Spacious Row House" ;
           :hasDistanceFromLake 200 ;
           :hasMaxNumberOfPeople 5 ;
+          :hasCottageImageUrl "https://media.istockphoto.com/id/471826199/photo/french-brittany-typical-house.jpg?s=612x612&w=0&k=20&c=Izy6Ms8WytO21jJ2gtuUlylIDl38TMgZYcFZTncFAcM=" ;
           :hasNumberOfBedrooms 2 .
 
 

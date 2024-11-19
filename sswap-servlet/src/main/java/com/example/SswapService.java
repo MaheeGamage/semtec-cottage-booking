@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.*;
 
 import org.json.JSONObject;
@@ -41,28 +40,45 @@ public class SswapService extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Set content type to RDF
-//		response.setContentType("application/rdf+xml");
-		response.setContentType("text/turtle");
+		response.setContentType("application/rdf+xml");
+//		response.setContentType("text/turtle");
+
+		RequestParams params = new RequestParams();
+		ArrayList<BookingSuggestionResponse> responseList =  new ArrayList<BookingSuggestionResponse>();
+		responseList.add(new BookingSuggestionResponse("",
+		"", // booking number
+		"", // address of the cottage
+		"", // image of the cottage
+		0, // actual number of places
+		0, // actual number ofs bedrooms
+		0, // distance to lake in meters
+		"", // nearest city
+		0, // distance to nearest city in km
+		"0", // booking start date
+		"0" // booking end date
+));
 
 		// Generate RDG
-		Model rdgModel = RDGGenerator.generateRDG();
+		Model rdgModel = RDGGenerator.generateSswapResources(new RequestParams(), responseList);
 		try (PrintWriter out = response.getWriter()) {
-//            rdgModel.write(out, "RDF/XML");
-			rdgModel.write(out, "TURTLE");
+            rdgModel.write(out, "RDF/XML");
+//			rdgModel.write(out, "TURTLE");
 		}
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// Set response type
-		resp.setContentType("text/turtle");
+		resp.setContentType("application/rdf+xml");
+//		resp.setContentType("text/turtle");
 		
 		SWDB mediator = new SWDB();
 
 		// Read RDF content from the POST body
 		Model ontModel = ModelFactory.createDefaultModel();
 		try (InputStream inputStream = req.getInputStream()) {
-			ontModel.read(inputStream, null, "TURTLE");
+//			ontModel.read(inputStream, null, "TURTLE");
+			ontModel.read(inputStream, null, "RDF/XML");
 		} catch (Exception e) {
 			e.printStackTrace();
 			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -94,7 +110,7 @@ public class SswapService extends HttpServlet {
 			// Generate RDG
 			Model rdgModel = RDGGenerator.generateSswapResources(params, bookingList);
 			try (PrintWriter out = resp.getWriter()) {
-				rdgModel.write(out, "TURTLE");
+				rdgModel.write(out, "RDF/XML");
 			}
 
 		} catch (Exception e) {

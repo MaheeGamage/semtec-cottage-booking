@@ -17,25 +17,29 @@ import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 
 public class SswapConnector {
+	
+	private static String sswapURL = "http://localhost:8080/sswap-servlet/cottage";
 
 	public static ArrayList<MediatorBookingSuggestionResponse> retrieveDataFromSswap(RequestParams requestParams) {
 		ArrayList<MediatorBookingSuggestionResponse> bookingList = new ArrayList<>();
 		
 		try {
 			// Define the target URL
-			URL url = new URL("http://localhost:8080/sswap-servlet/cottage");
+			URL url = new URL(sswapURL);
 
 			// Open connection
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
 			// Set request properties
 			connection.setRequestMethod("POST");
-			connection.setRequestProperty("Content-Type", "text/turtle");
+//			connection.setRequestProperty("Content-Type", "text/turtle");
+			connection.setRequestProperty("Content-Type", "application/rdf+xml");
 			connection.setDoOutput(true);
 
-			Model rdgModel = RDGGenerator.generateRequestSswapResources(requestParams);
+			Model rdgModel = MediatorRDGGenerator.generateRequestSswapResources(requestParams);
 			StringWriter modelOutput = new StringWriter();
-			rdgModel.write(modelOutput, "TURTLE");
+//			rdgModel.write(modelOutput, "TURTLE");
+			rdgModel.write(modelOutput, "RDF/XML");
 			String turtleData = modelOutput.toString();
 			
 			// Send the Turtle data
@@ -72,7 +76,7 @@ public class SswapConnector {
 		            Model model = ModelFactory.createDefaultModel();
 
 		            // Read the Turtle content into the Model
-		            RDFDataMgr.read(model, inputStream, Lang.TURTLE);
+		            RDFDataMgr.read(model, inputStream, Lang.RDFXML);
 
 //		            System.out.println("RDF Model Out");
 		            // Print the Model to verify
