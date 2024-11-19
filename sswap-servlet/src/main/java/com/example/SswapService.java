@@ -75,18 +75,19 @@ public class SswapService extends HttpServlet {
 //			resp.getWriter().write(jObj.toString());
 
 			RequestParams params = new RequestParams();
-			params.setName(jObj.getString("bookerName"));
-			params.setBedroomCount(ServiceUtil.retrieveXSDIntValue(jObj.getString("bedroomCount"))); 
-			params.setMaxLakeDistance(ServiceUtil.retrieveXSDIntValue(jObj.getString("maxLakeDistance")));
-			params.setCity(jObj.getString("nearestCity"));
-			params.setMaxCityDistance(ServiceUtil.retrieveXSDIntValue(jObj.getString("maxCityDistance")));
-			params.setDayCount(ServiceUtil.retrieveXSDIntValue(jObj.getString("dayCount")));
-			params.setStartDate(ServiceUtil.retrieveXSDStringValue(jObj.getString("startDate")));
-			params.setMaxDayShifts(ServiceUtil.retrieveXSDIntValue(jObj.getString("maxDayShifts")));
+			params.setName(jObj.getString("requestBookerName"));
+			params.setNoOfPeople(ServiceUtil.retrieveXSDIntValue(jObj.getString("requestPeopleCount")));
+			params.setBedroomCount(ServiceUtil.retrieveXSDIntValue(jObj.getString("requestBedroomCount"))); 
+			params.setMaxLakeDistance(ServiceUtil.retrieveXSDIntValue(jObj.getString("requestMaxLakeDistance")));
+			params.setCity(jObj.getString("requestNearestCity"));
+			params.setMaxCityDistance(ServiceUtil.retrieveXSDIntValue(jObj.getString("requestMaxCityDistance")));
+			params.setDayCount(ServiceUtil.retrieveXSDIntValue(jObj.getString("requestDayCount")));
+			params.setStartDate(ServiceUtil.retrieveXSDStringValue(jObj.getString("requestStartDate")));
+			params.setMaxDayShifts(ServiceUtil.retrieveXSDIntValue(jObj.getString("requestMaxDayShifts")));
 
 //			resp.setContentType("text/turtle");
 			
-			String pathToDB = this.getServletContext().getRealPath("/res/cottage_individuals.ttl");
+			String pathToDB = this.getServletContext().getRealPath("/res/ontology/cottage_booking_ontology.ttl");
 			ArrayList<BookingSuggestionResponse> bookingList = mediator.searchForResult(pathToDB, params);
 
 			// Generate RDG

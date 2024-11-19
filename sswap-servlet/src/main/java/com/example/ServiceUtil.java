@@ -36,6 +36,10 @@ public class ServiceUtil {
 		String NS_SSWAP = "http://sswapmeet.sswap.info/sswap/";
 		String NS_ONT = "http://localhost:8080/SW_project/cottagebooking#";
 
+		String[] sswapRequestParams = { "requestBookerName", "requestPeopleCount", "requestBedroomCount",
+				"requestMaxLakeDistance", "requestNearestCity", "requestMaxCityDistance", "requestDayCount",
+				"requestStartDate", "requestMaxDayShifts" };
+
 		// Find the blank nodes with sswap:hasMapping predicate
 		ResIterator resIterator = model.listSubjectsWithProperty(model.createProperty(NS_SSWAP + "hasMapping"));
 
@@ -47,84 +51,29 @@ public class ServiceUtil {
 			if (hasMappingStmt != null) {
 				// Retrieve the blank node
 				Resource mappingNode = hasMappingStmt.getObject().asResource();
-
-				// Extract ont:bedroomCount
-				Statement bedroomCountStmt = mappingNode.getProperty(model.createProperty(NS_ONT + "bedroomCount"));
-				if (bedroomCountStmt != null) {
-//					System.out.println("ont:bedroomCount: " + bedroomCountStmt.getObject().toString());
-					jsonObject.put("bedroomCount", bedroomCountStmt.getObject().toString());
+				
+				// Add requestParams from turtle file to s
+				for (String requestParam : sswapRequestParams) {
+					Statement ontStmt = mappingNode.getProperty(model.createProperty(NS_ONT + requestParam));
+					if (ontStmt != null) {
+						jsonObject.put(requestParam, ontStmt.getObject().toString());
+					}
 				}
 
-				// Extract ont:bookerName
-				Statement bookerNameStmt = mappingNode.getProperty(model.createProperty(NS_ONT + "bookerName"));
-				if (bookerNameStmt != null) {
-//					System.out.println("ont:bookerName: " + bookerNameStmt.getObject().toString());
-					jsonObject.put("bookerName", bookerNameStmt.getObject().toString());
-				}
-
-				// Extract ont:dayCount
-				Statement dayCountStmt = mappingNode.getProperty(model.createProperty(NS_ONT + "dayCount"));
-				if (dayCountStmt != null) {
-//					System.out.println("ont:dayCount: " + dayCountStmt.getObject().toString());
-					jsonObject.put("dayCount", dayCountStmt.getObject().toString());
-				}
-
-				// Extract ont:maxCityDistance
-				Statement maxCityDistanceStmt = mappingNode
-						.getProperty(model.createProperty(NS_ONT + "maxCityDistance"));
-				if (maxCityDistanceStmt != null) {
-//					System.out.println("ont:maxCityDistance: " + maxCityDistanceStmt.getObject().toString());
-					jsonObject.put("maxCityDistance", maxCityDistanceStmt.getObject().toString());
-				}
-
-				// Extract ont:maxDayShifts
-				Statement maxDayShiftsStmt = mappingNode.getProperty(model.createProperty(NS_ONT + "maxDayShifts"));
-				if (maxDayShiftsStmt != null) {
-//					System.out.println("ont:maxDayShifts: " + maxDayShiftsStmt.getObject().toString());
-					jsonObject.put("maxDayShifts", maxDayShiftsStmt.getObject().toString());
-				}
-
-				// Extract ont:maxLakeDistance
-				Statement maxLakeDistanceStmt = mappingNode.getProperty(model.createProperty(NS_ONT + "maxLakeDistance"));
-				if (maxLakeDistanceStmt != null) {
-//					System.out.println("ont:maxLakeDistance: " + maxLakeDistanceStmt.getObject().toString());
-					jsonObject.put("maxLakeDistance", maxLakeDistanceStmt.getObject().toString());
-				}
-
-				// Extract ont:nearestCity
-				Statement nearestCityStmt = mappingNode.getProperty(model.createProperty(NS_ONT + "nearestCity"));
-				if (nearestCityStmt != null) {
-//					System.out.println("ont:nearestCity: " + nearestCityStmt.getObject().toString());
-					jsonObject.put("nearestCity", nearestCityStmt.getObject().toString());
-				}
-
-                // Extract ont:peopleCount
-				Statement peopleCountStmt = mappingNode.getProperty(model.createProperty(NS_ONT + "peopleCount"));
-				if (peopleCountStmt != null) {
-//					System.out.println("ont:peopleCount: " + peopleCountStmt.getObject().toString());
-					jsonObject.put("peopleCount", peopleCountStmt.getObject().toString());
-				}
-
-                // Extract ont:startDate
-				Statement startDateStmt = mappingNode.getProperty(model.createProperty(NS_ONT + "startDate"));
-				if (startDateStmt != null) {
-//					System.out.println("ont:startDate: " + startDateStmt.getObject().toString());
-					jsonObject.put("startDate", startDateStmt.getObject().toString());
-				}
 			}
 		}
 
 		return jsonObject;
 	}
-	
+
 	public static String checkAndReturnString(String str) {
-        return (str == null) ? "" : str;
-    }
-	
+		return (str == null) ? "" : str;
+	}
+
 	public static int retrieveXSDIntValue(String val) {
 		return Integer.parseInt(val.split("\\^\\^")[0]);
 	}
-	
+
 	public static String retrieveXSDStringValue(String val) {
 		return val.split("\\^\\^")[0];
 	}
