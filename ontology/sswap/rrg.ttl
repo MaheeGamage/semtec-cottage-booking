@@ -32,8 +32,8 @@
         ont:responseDistanceToLake "100"^^xsd:integer ;
         ont:responseNearestCity "Jyvaskyla"^^xsd:string ;
         ont:responseDistanceToCity "10"^^xsd:integer ;
-        ont:requestBookingStartDate "2024-11-05"^^xsd:date ;
-        ont:requestBookingEndDate "2024-11-08"^^xsd:date
+        ont:responseBookingStartDate "2024-11-05"^^xsd:date ;
+        ont:responseBookingEndDate "2024-11-08"^^xsd:date
       ]
     ]
   ] .

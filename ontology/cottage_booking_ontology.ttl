@@ -197,14 +197,14 @@ xsd:date rdf:type rdfs:Datatype .
                    rdfs:range xsd:string .
 
 
-###  http://localhost:8080/SW_project/cottagebooking#requestBookingEndDate
-:requestBookingEndDate rdf:type owl:DatatypeProperty ;
+###  http://localhost:8080/SW_project/cottagebooking#responseBookingEndDate
+:responseBookingEndDate rdf:type owl:DatatypeProperty ;
                        rdfs:domain :BookingServiceResponse ;
                        rdfs:range xsd:date .
 
 
-###  http://localhost:8080/SW_project/cottagebooking#requestBookingStartDate
-:requestBookingStartDate rdf:type owl:DatatypeProperty ;
+###  http://localhost:8080/SW_project/cottagebooking#responseBookingStartDate
+:responseBookingStartDate rdf:type owl:DatatypeProperty ;
                          rdfs:domain :BookingServiceResponse ;
                          rdfs:range xsd:date .
 
@@ -436,8 +436,8 @@ xsd:date rdf:type rdfs:Datatype .
 ###  http://localhost:8080/SW_project/cottagebooking#bookingServiceResponse1
 :bookingServiceResponse1 rdf:type owl:NamedIndividual ,
                                   :BookingServiceResponse ;
-                         :requestBookingEndDate "2024-11-08"^^xsd:date ;
-                         :requestBookingStartDate "2024-11-05"^^xsd:date ;
+                         :responseBookingEndDate "2024-11-08"^^xsd:date ;
+                         :responseBookingStartDate "2024-11-05"^^xsd:date ;
                          :responseBookerName "Jhon 1" ;
                          :responseBookingNumber "1001" ;
                          :responseCottageAddress "123 Lakeview Street, Jyvaskyla" ;

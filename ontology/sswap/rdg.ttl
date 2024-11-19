@@ -32,8 +32,8 @@
         ont:responseDistanceToLake ""^^xsd:integer ;
         ont:responseNearestCity ""^^xsd:string ;
         ont:responseDistanceToCity ""^^xsd:integer ;
-        ont:requestBookingStartDate ""^^xsd:date ;
-        ont:requestBookingEndDate ""^^xsd:date
+        ont:responseBookingStartDate ""^^xsd:date ;
+        ont:responseBookingEndDate ""^^xsd:date
       ]
     ]
   ] .
