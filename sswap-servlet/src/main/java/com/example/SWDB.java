@@ -23,50 +23,64 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-
 public class SWDB {
-	
+
 	static final int bookingIdStart = 1000;
+	static final int maxDayShiftsLimt = 3;
 
 	public ArrayList<BookingSuggestionResponse> searchForResult(String pathDB, RequestParams params) {
-		//Calculate booking end date
-		LocalDate bookingRequestStartDate = LocalDate.parse(params.getStartDate(), DateTimeFormatter.ISO_LOCAL_DATE);
-        LocalDate bookingRequestEndDate = bookingRequestStartDate.plusDays(params.getDayCount());
-		
-		System.out.println("Do query...");
+		int dayShifts = Math.min(params.getMaxDayShifts(), maxDayShiftsLimt);
+		LocalDate baseStartDate = LocalDate.parse(params.getStartDate(), DateTimeFormatter.ISO_LOCAL_DATE);
 
-		Model model = RDFDataMgr.loadModel(pathDB);
-		OntModelSpec ontModelSpec = OntModelSpec.OWL_DL_MEM;
-		OntModel ontModel = ModelFactory.createOntologyModel(ontModelSpec, model);
+		List<LocalDate> dates = new ArrayList<>();
+		for (int i = -dayShifts; i <= dayShifts; i++) {
+			dates.add(baseStartDate.plusDays(i));
+		}
 
-		String queryString = new Query3().generateQuery(params);
-		System.out.println("queryString: ---\n" + queryString);
-
-		Dataset dataset = DatasetFactory.create(ontModel);
-		Query q = QueryFactory.create(queryString);
-		QueryExecution qexec = QueryExecutionFactory.create(q, dataset);
-		ResultSet resultSet = qexec.execSelect();
-
-		int tempBookingId = bookingIdStart;
 		ArrayList<BookingSuggestionResponse> bookingList = new ArrayList<>();
-		while (resultSet.hasNext()) {
-			QuerySolution row = resultSet.next();
-			Map<String, String> rowData = new HashMap<>();
+		int tempBookingId = bookingIdStart;
+
+		// Print the dates for demonstration purposes
+		for (LocalDate date : dates) {
+
+			// Calculate booking end date
+			LocalDate bookingRequestStartDate = date;
+			LocalDate bookingRequestEndDate = bookingRequestStartDate.plusDays(params.getDayCount());
+
+			System.out.println("Do query...");
+
+			Model model = RDFDataMgr.loadModel(pathDB);
+			OntModelSpec ontModelSpec = OntModelSpec.OWL_DL_MEM;
+			OntModel ontModel = ModelFactory.createOntologyModel(ontModelSpec, model);
+
+			String queryString = new Query3().generateQuery(params);
+			System.out.println("queryString: ---\n" + queryString);
+
+			Dataset dataset = DatasetFactory.create(ontModel);
+			Query q = QueryFactory.create(queryString);
+			QueryExecution qexec = QueryExecutionFactory.create(q, dataset);
+			ResultSet resultSet = qexec.execSelect();
 			
-			// Adding booker's name
-			rowData.put("bookerName", params.getName());
-			rowData.put("bookingNumber", String.valueOf(++tempBookingId));
-			rowData.put("bookingStartDate", params.getStartDate());
-			rowData.put("bookingEndDate", bookingRequestEndDate.toString());
+			while (resultSet.hasNext()) {
+				QuerySolution row = resultSet.next();
+				Map<String, String> rowData = new HashMap<>();
 
-			row.varNames().forEachRemaining(varName -> {
-				RDFNode node = row.get(varName);
-				rowData.put(varName, (node != null ? node.toString() : "null"));
-			});
+				// Adding booker's name
+				rowData.put("bookerName", params.getName());
+				rowData.put("bookingNumber", String.valueOf(++tempBookingId));
+				rowData.put("bookingStartDate", params.getStartDate());
+				rowData.put("bookingEndDate", bookingRequestEndDate.toString());
 
-			bookingList.add(new BookingSuggestionResponse(rowData));
+				row.varNames().forEachRemaining(varName -> {
+					RDFNode node = row.get(varName);
+					rowData.put(varName, (node != null ? node.toString() : "null"));
+				});
+
+				bookingList.add(new BookingSuggestionResponse(rowData));
+			}
 		}
 
 		return bookingList;
