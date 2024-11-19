@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.*;
 
 import org.json.JSONObject;
@@ -44,8 +43,23 @@ public class SswapService extends HttpServlet {
 //		response.setContentType("application/rdf+xml");
 		response.setContentType("text/turtle");
 
+		RequestParams params = new RequestParams();
+		ArrayList<BookingSuggestionResponse> responseList =  new ArrayList<BookingSuggestionResponse>();
+		responseList.add(new BookingSuggestionResponse("",
+		"", // booking number
+		"", // address of the cottage
+		"", // image of the cottage
+		0, // actual number of places
+		0, // actual number ofs bedrooms
+		0, // distance to lake in meters
+		"", // nearest city
+		0, // distance to nearest city in km
+		"0", // booking start date
+		"0" // booking end date
+));
+
 		// Generate RDG
-		Model rdgModel = RDGGenerator.generateRDG();
+		Model rdgModel = RDGGenerator.generateSswapResources(new RequestParams(), responseList);
 		try (PrintWriter out = response.getWriter()) {
 //            rdgModel.write(out, "RDF/XML");
 			rdgModel.write(out, "TURTLE");
