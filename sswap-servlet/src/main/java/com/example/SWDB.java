@@ -45,6 +45,7 @@ public class SWDB {
 
 		// Print the dates for demonstration purposes
 		for (LocalDate date : dates) {
+			System.out.println(date);
 
 			// Calculate booking end date
 			LocalDate bookingRequestStartDate = date;
@@ -56,7 +57,7 @@ public class SWDB {
 			OntModelSpec ontModelSpec = OntModelSpec.OWL_DL_MEM;
 			OntModel ontModel = ModelFactory.createOntologyModel(ontModelSpec, model);
 
-			String queryString = new Query3().generateQuery(params);
+			String queryString = new Query3().generateQuery(params, bookingRequestStartDate, bookingRequestEndDate);
 			System.out.println("queryString: ---\n" + queryString);
 
 			Dataset dataset = DatasetFactory.create(ontModel);
@@ -71,7 +72,7 @@ public class SWDB {
 				// Adding booker's name
 				rowData.put("bookerName", params.getName());
 				rowData.put("bookingNumber", String.valueOf(++tempBookingId));
-				rowData.put("bookingStartDate", params.getStartDate());
+				rowData.put("bookingStartDate", bookingRequestStartDate.toString());
 				rowData.put("bookingEndDate", bookingRequestEndDate.toString());
 
 				row.varNames().forEachRemaining(varName -> {

@@ -1,0 +1,12 @@
+1 output with clashing booking
+-----------
+Name: Hank
+No of People: 2
+bedrooms: 1
+Max distance to lake (m): 500
+City: Helsinki
+Max distance to the city (km): 150
+Required number of days: 2
+Starting Date: 11/15/2024
+Max possible shift of days: 0
+

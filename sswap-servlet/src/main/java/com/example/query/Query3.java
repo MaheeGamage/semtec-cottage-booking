@@ -8,10 +8,10 @@ import java.time.format.DateTimeFormatter;
 public class Query3 implements IQuery {
 
 	@Override
-	public String generateQuery(RequestParams params) {
+	public String generateQuery(RequestParams params, LocalDate startDate, LocalDate endDate) {
 		// Calculating end date
-		LocalDate startDate = LocalDate.parse(params.getStartDate(), DateTimeFormatter.ISO_LOCAL_DATE);
-        LocalDate endDate = startDate.plusDays(params.getDayCount());
+//		LocalDate startDate = LocalDate.parse(params.getStartDate(), DateTimeFormatter.ISO_LOCAL_DATE);
+//        LocalDate endDate = startDate.plusDays(params.getDayCount());
 		
 		String queryString = "PREFIX : <http://localhost:8080/SW_project/cottagebooking#>\r\n"
 				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n"
@@ -20,7 +20,7 @@ public class Query3 implements IQuery {
 				+ "SELECT ?cottage ?address ?city ?distanceFromLake ?distanceFromCity ?maxPeople ?cottageImageUrl ?bedrooms\r\n"
 				+ "WHERE {\r\n"
 				+ "  # Define user requirements\r\n"
-				+ "  BIND(\""+ params.getStartDate() +"\"^^xsd:date AS ?userStart) .\r\n"
+				+ "  BIND(\""+ startDate.toString() +"\"^^xsd:date AS ?userStart) .\r\n"
 				+ "  BIND(\""+ endDate.toString() +"\"^^xsd:date AS ?userEnd) .\r\n"
 				+ "\r\n"
 				+ "  # Retrieve cottage details\r\n"
