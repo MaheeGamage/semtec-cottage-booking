@@ -36,19 +36,22 @@ function doQuery() {
 		q_str += '&sswapUrl=' + encodeURIComponent(sswapUrl);
 
 		// Define body content
-		var bodyContent = {
-			alignment: {
-				requestPeopleCount: "requestDayCount",
-				requestDayCount: "requestPeopleCount",
-				requestMaxCityDistance: "requestMaxCityDistance",
-				requestBedroomCount: "requestBedroomCount",
-				requestBookerName: "requestBookerName",
-				requestMaxLakeDistance: "requestMaxLakeDistance",
-				requestStartDate: "requestStartDate",
-				requestNearestCity: "requestNearestCity",
-				requestMaxDayShifts: "requestMaxDayShifts"
-			}
-		}
+		// var bodyContent = {
+		// 	alignment: {
+		// 		requestPeopleCount: "requestDayCount",
+		// 		requestDayCount: "requestPeopleCount",
+		// 		requestMaxCityDistance: "requestMaxCityDistance",
+		// 		requestBedroomCount: "requestBedroomCount",
+		// 		requestBookerName: "requestBookerName",
+		// 		requestMaxLakeDistance: "requestMaxLakeDistance",
+		// 		requestStartDate: "requestStartDate",
+		// 		requestNearestCity: "requestNearestCity",
+		// 		requestMaxDayShifts: "requestMaxDayShifts"
+		// 	}
+		// }
+
+		var bodyContent = { alignment: {} }
+		bodyContent.alignment = recreateJSON();
 
 		// Convert body content to JSON
 		var bodyJson = JSON.stringify(bodyContent);
@@ -138,11 +141,156 @@ function initiModal() {
 function connectToService() {
 	var url = document.getElementById('sswapServiceUrl').value;
 	// Implement AJAX call to connect to the service
-	// On success:
-	document.getElementById('searchFormFieldSet').disabled = false;
-	document.getElementById('modalMessage').innerText = 'Connected successfully!';
-	document.getElementById('responseModal').style.display = 'block';
+	if (url !== '') {
+		const rdgUrl = document.getElementById('sswapServiceUrl').value.trim();
+		var q_str = 'rdgUrl=' + encodeURIComponent(rdgUrl);
+		doAjax('OntologyAlignment', q_str, 'onAlignmentResponse', 'get', 0);
+	} else {
+		alert('Please, fill SSWAP Service URL...');
+	}
 }
 
+function onAlignmentResponse(response) {
+	try {
+		// Parse the result to ensure it's a JSON object
+		const parsedResult = JSON.parse(response);
+		console.log(parsedResult);
+
+		// On success:
+		document.getElementById('searchFormFieldSet').disabled = false;
+		displayAligmentData(parsedResult);
+
+		// After successful connection
+		document.getElementById('disconnectBtn').style.display = ''; 
+		document.getElementById('sswapServiceUrl').disabled = true;
+		document.getElementById('connectBtn').style.display = 'None'; 
+
+		// document.getElementById('modalMessage').innerText = 'Connected successfully!';
+		// document.getElementById('responseModal').style.display = 'block';
+	} catch (error) {
+		console.error(error);
+		alert('Error: ' + error.message);
+	}
+}
+
+function displayAligmentData(data) {
+	// Below is a sample 'data' JSON object to be used for testing
+	// const data = {
+	// 	"requestPeopleCount": "requestPeopleCount",
+	// 	"requestDayCount": "requestDayCount",
+	// 	"requestMaxCityDistance": "requestMaxCityDistance",
+	// 	"requestBedroomCount": "requestBedroomCount",
+	// 	"requestBookerName": "requestBookerName",
+	// 	"requestMaxLakeDistance": "requestStartDate",
+	// 	"requestStartDate": "requestMaxLakeDistance",
+	// 	"requestNearestCity": "requestNearestCity",
+	// 	"requestMaxDayShifts": "requestMaxDayShifts"
+	// };
+
+	const container = document.getElementById('keyValueContainer');
+	container.innerHTML = '';
+
+	Object.entries(data).forEach(([key, value]) => {
+		// Create a row container
+		const row = document.createElement('div');
+		row.classList.add('alignment-display-row');
+
+		// Create a key label
+		const keyLabel = document.createElement('div');
+		keyLabel.classList.add('alignment-display-key');
+		keyLabel.textContent = key;
+
+		// Create a dropdown
+		const select = document.createElement('select');
+		select.classList.add('alignment-display-value');
+
+		// Add options (keys from the JSON object)
+		Object.values(data).forEach(optionValue => {
+			const option = document.createElement('option');
+			option.value = optionValue;
+			option.textContent = optionValue;
+			if (optionValue === value) {
+				option.selected = true;
+			}
+			select.appendChild(option);
+		});
+
+		// Append key label and dropdown to the row
+		row.appendChild(keyLabel);
+		row.appendChild(select);
+
+		// Append row to the container
+		container.appendChild(row);
+		container.style.display = 'block';
+	});
+	
+	initializeDropdowns();
+}
+
+// Function to toggle the collapsible content
+function toggleContent() {
+	const content = document.getElementById('keyValueContainer');
+	content.style.display = content.style.display === 'block' ? 'none' : 'block';
+}
+
+
+function recreateJSON() {
+	const container = document.getElementById('keyValueContainer');
+	const rows = container.querySelectorAll('.alignment-display-row'); // Select all rows
+	const result = {};
+
+	rows.forEach(row => {
+		const key = row.querySelector('.alignment-display-key').textContent; // Get the key text
+		const value = row.querySelector('.alignment-display-value').value;   // Get the selected value
+		result[key] = value; // Add to the JSON object
+	});
+
+	console.log(result); // Log the reconstructed JSON
+	return result; // Return the JSON object
+}
+
+function initializeDropdowns() {
+    const container = document.getElementById('keyValueContainer');
+    const dropdowns = container.querySelectorAll('.alignment-display-value'); // Select all dropdowns
+
+    dropdowns.forEach((dropdown) => {
+        dropdown.addEventListener('change', (event) => {
+            const selectedValue = event.target.value; // New value
+            const previousValue = event.target.dataset.previousValue; // Old value
+
+            // Find the dropdown currently holding the new value
+            dropdowns.forEach((otherDropdown) => {
+                if (otherDropdown !== event.target && otherDropdown.value === selectedValue) {
+                    // Swap the values
+                    otherDropdown.value = previousValue;
+                }
+            });
+
+            // Update the dataset with the current value
+            event.target.dataset.previousValue = selectedValue;
+        });
+
+        // Initialize the dataset with the default value
+        dropdown.dataset.previousValue = dropdown.value;
+    });
+}
+
+function onDisconnect() {
+	document.getElementById('disconnectBtn').style.display = 'none'; 
+	document.getElementById('sswapServiceUrl').disabled = false;
+	document.getElementById('connectBtn').style.display = ''; 
+
+	const keyValueContainer = document.getElementById('keyValueContainer');
+	keyValueContainer.innerHTML = '';
+
+	const bookingSuggetioncontainer = document.getElementById('booking-suggestion-container');
+	bookingSuggetioncontainer.innerHTML = ''; // Clear previous content
+
+	document.getElementById('searchFormFieldSet').disabled = true;
+}
+
+initializeDropdowns();
+
 // Call the function to initialize the modal
-initiModal();
+// initiModal();
+// displayAligmentData();

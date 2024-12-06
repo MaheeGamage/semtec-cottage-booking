@@ -10,7 +10,6 @@
 
 <body>
     <div class="container">
-        <button id="configBtn">Configuration</button>
         <h1><b>Booking Service Client</b></h1>
 
         <!-- Step 1: Connect -->
@@ -18,8 +17,16 @@
             <h3>Connect</h3>
             <i>SSWAP Service URL:</i>
             <input type="text" id="sswapServiceUrl">
-            <input type="button" value="Connect" id="connectBtn" onclick="connectToService();">
+            <input type="button" value="Connect" id="connectBtn" class="primary-btn" onclick="connectToService();">
+            <input type="button" value="Disconnect" class="secondary-btn" id="disconnectBtn"
+                onClick="onDisconnect();"
+                style="display: none;">
         </form>
+
+        <!-- <button onclick="displayAligmentData();">Test</button> -->
+        <div class="alignment-display-header" id="alignment-display-toggle-elem" onclick="toggleContent()">Toggle
+            Key-Value Pairs</div>
+        <div class="alignment-display-content" id="keyValueContainer"></div>
 
         <!-- Step 2: Search -->
         <form id="searchForm" disabled>
