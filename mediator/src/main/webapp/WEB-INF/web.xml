@@ -10,4 +10,10 @@
   	<description></description>
   	<servlet-class>com.example.Booking</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>OntologyAlignment</servlet-name>
+  	<display-name>OntologyAlignment</display-name>
+  	<description></description>
+  	<servlet-class>com.example.align.OntologyAlignment</servlet-class>
+  </servlet>
 </web-app>

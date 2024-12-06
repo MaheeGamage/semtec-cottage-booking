@@ -28,7 +28,7 @@
                 <rdf:type rdf:resource="http://localhost:8080/SW_project/cottagebooking#BookingServiceResponse"/>
                 <ns1:responseBookerName rdf:datatype="http://www.w3.org/2001/XMLSchema#string"></ns1:responseBookerName>
                 <ns1:responseBookingNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#string"></ns1:responseBookingNumber>
-                <ns1:responseCottageAddress rdf:datatype="http://www.w3.org/2001/XMLSchema#string"> Lakeview Street, Jyvaskyla</ns1:responseCottageAddress>
+                <ns1:responseCottageAddress rdf:datatype="http://www.w3.org/2001/XMLSchema#string"></ns1:responseCottageAddress>
                 <ns1:responseCottageImageUrl rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI"></ns1:responseCottageImageUrl>
                 <ns1:responseNumberOfPlaces rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"></ns1:responseNumberOfPlaces>
                 <ns1:responseNumberOfBedrooms rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"></ns1:responseNumberOfBedrooms>
