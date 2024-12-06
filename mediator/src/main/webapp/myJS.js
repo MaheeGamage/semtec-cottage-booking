@@ -9,7 +9,10 @@ function doQuery() {
 	const startDate = document.getElementById('inpStartDate').value.trim();
 	const maxDayShifts = document.getElementById('inpMaxDayShifts').value.trim();
 
+	const sswapUrl = document.getElementById('sswapServiceUrl').value.trim();
+
 	if (
+		sswapUrl !== '' &&
 		name !== '' &&
 		peopleCount !== '' &&
 		bedroomCount !== '' &&
@@ -21,17 +24,36 @@ function doQuery() {
 		maxDayShifts !== ''
 	) {
 		var q_str = 'reqType=doQuery';
-		q_str += '&name=' + encodeURIComponent(name);
-		q_str += '&peopleCount=' + encodeURIComponent(peopleCount);
-		q_str += '&bedroomCount=' + encodeURIComponent(bedroomCount);
-		q_str += '&maxLakeDistance=' + encodeURIComponent(maxLakeDistance);
-		q_str += '&city=' + encodeURIComponent(city);
-		q_str += '&maxCityDistance=' + encodeURIComponent(maxCityDistance);
-		q_str += '&dayCount=' + encodeURIComponent(dayCount);
-		q_str += '&startDate=' + encodeURIComponent(startDate);
-		q_str += '&maxDayShifts=' + encodeURIComponent(maxDayShifts);
+		q_str += '&requestBookerName=' + encodeURIComponent(name);
+		q_str += '&requestPeopleCount=' + encodeURIComponent(peopleCount);
+		q_str += '&requestBedroomCount=' + encodeURIComponent(bedroomCount);
+		q_str += '&requestMaxLakeDistance=' + encodeURIComponent(maxLakeDistance);
+		q_str += '&requestNearestCity=' + encodeURIComponent(city);
+		q_str += '&requestMaxCityDistance=' + encodeURIComponent(maxCityDistance);
+		q_str += '&requestDayCount=' + encodeURIComponent(dayCount);
+		q_str += '&requestStartDate=' + encodeURIComponent(startDate);
+		q_str += '&requestMaxDayShifts=' + encodeURIComponent(maxDayShifts);
+		q_str += '&sswapUrl=' + encodeURIComponent(sswapUrl);
 
-		doAjax('Booking', q_str, 'doQuery_back', 'post', 0);
+		// Define body content
+		var bodyContent = {
+			alignment: {
+				requestPeopleCount: "requestDayCount",
+				requestDayCount: "requestPeopleCount",
+				requestMaxCityDistance: "requestMaxCityDistance",
+				requestBedroomCount: "requestBedroomCount",
+				requestBookerName: "requestBookerName",
+				requestMaxLakeDistance: "requestMaxLakeDistance",
+				requestStartDate: "requestStartDate",
+				requestNearestCity: "requestNearestCity",
+				requestMaxDayShifts: "requestMaxDayShifts"
+			}
+		}
+
+		// Convert body content to JSON
+		var bodyJson = JSON.stringify(bodyContent);
+
+		doAjax('Booking?' + q_str, bodyJson, 'doQuery_back', 'post', 0);
 	} else {
 		alert('Please, fill all the search fields...');
 	}

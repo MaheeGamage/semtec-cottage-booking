@@ -16,16 +16,18 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 
+import com.example.align.OntologyAlignmentResult;
+
 public class SswapConnector {
 	
-	private static String sswapURL = "http://localhost:8080/sswap-servlet/cottage";
+//	private static String sswapURL = "http://localhost:8080/sswap-servlet/cottage";
 
-	public static ArrayList<MediatorBookingSuggestionResponse> retrieveDataFromSswap(RequestParams requestParams) {
+	public static ArrayList<MediatorBookingSuggestionResponse> retrieveDataFromSswap(RequestParams requestParams, OntologyAlignmentResult alignment, String sswapUrl) {
 		ArrayList<MediatorBookingSuggestionResponse> bookingList = new ArrayList<>();
 		
 		try {
 			// Define the target URL
-			URL url = new URL(sswapURL);
+			URL url = new URL(sswapUrl);
 
 			// Open connection
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -36,7 +38,7 @@ public class SswapConnector {
 			connection.setRequestProperty("Content-Type", "application/rdf+xml");
 			connection.setDoOutput(true);
 
-			Model rdgModel = MediatorRDGGenerator.generateRequestSswapResources(requestParams);
+			Model rdgModel = MediatorRDGGenerator.generateRequestSswapResources(requestParams, alignment);
 			StringWriter modelOutput = new StringWriter();
 //			rdgModel.write(modelOutput, "TURTLE");
 			rdgModel.write(modelOutput, "RDF/XML");

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
 /**
@@ -88,22 +89,27 @@ public class Booking extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
+		
+        ObjectMapper objectMapper = new ObjectMapper();
+        MediatorRequest mediatorRequestObject = objectMapper.readValue(request.getInputStream(), MediatorRequest.class);
 
 		ArrayList<MediatorBookingSuggestionResponse> results = new ArrayList<>();
 
 		if (request.getParameter("reqType").toString().equals("doQuery")) {
 			RequestParams params = new RequestParams();
-			params.setName(request.getParameter("name"));
-			params.setNoOfPeople(Integer.parseInt(request.getParameter("peopleCount")));
-			params.setBedroomCount(Integer.parseInt(request.getParameter("bedroomCount")));
-			params.setMaxLakeDistance(Integer.parseInt(request.getParameter("maxLakeDistance")));
-			params.setCity(request.getParameter("city"));
-			params.setMaxCityDistance(Integer.parseInt(request.getParameter("maxCityDistance")));
-			params.setDayCount(Integer.parseInt(request.getParameter("dayCount")));
-			params.setStartDate(request.getParameter("startDate"));
-			params.setMaxDayShifts(Integer.parseInt(request.getParameter("maxDayShifts")));
+			params.setName(request.getParameter("requestBookerName"));
+			params.setNoOfPeople(Integer.parseInt(request.getParameter("requestPeopleCount")));
+			params.setBedroomCount(Integer.parseInt(request.getParameter("requestBedroomCount")));
+			params.setMaxLakeDistance(Integer.parseInt(request.getParameter("requestMaxLakeDistance")));
+			params.setCity(request.getParameter("requestNearestCity"));
+			params.setMaxCityDistance(Integer.parseInt(request.getParameter("requestMaxCityDistance")));
+			params.setDayCount(Integer.parseInt(request.getParameter("requestDayCount")));
+			params.setStartDate(request.getParameter("requestStartDate"));
+			params.setMaxDayShifts(Integer.parseInt(request.getParameter("requestMaxDayShifts")));
+			
+			String sswapUrl = request.getParameter("sswapUrl");
 
-			results = SswapConnector.retrieveDataFromSswap(params);
+			results = SswapConnector.retrieveDataFromSswap(params, mediatorRequestObject.getAlignment(), sswapUrl);
 			
 		}
 		

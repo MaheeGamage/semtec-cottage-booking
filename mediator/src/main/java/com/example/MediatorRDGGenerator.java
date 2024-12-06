@@ -10,6 +10,8 @@ import org.apache.jena.datatypes.TypeMapper;
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.vocabulary.XSD;
 
+import com.example.align.OntologyAlignmentResult;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -112,7 +114,7 @@ public class MediatorRDGGenerator {
 
 	}
 
-	public static Model generateRequestSswapResources(RequestParams bookingRequest) {
+	public static Model generateRequestSswapResources(RequestParams bookingRequest, OntologyAlignmentResult alignment) {
 		// Define namespaces
 		String sswapNS = "http://sswapmeet.sswap.info/sswap/";
 		String ontNS = "http://localhost:8080/SW_project/cottagebooking#";
@@ -161,39 +163,39 @@ public class MediatorRDGGenerator {
 		// Create hasMapping subject
 		Resource subject = model.createResource().addProperty(RDF.type, model.createResource(sswapNS + "Subject"))
 				.addProperty(RDF.type, model.createResource(ontNS + "BookingServiceRequest"))
-				.addProperty(model.createProperty(ontNS + "requestBookerName"),
+				.addProperty(model.createProperty(ontNS + alignment.getRequestBookerName()),
 						model.createTypedLiteral(requestBookerName,
 								TypeMapper.getInstance().getTypeByName(XSD.xstring.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "requestPeopleCount"),
+				.addProperty(model.createProperty(ontNS + alignment.getRequestPeopleCount()),
 						model.createTypedLiteral(requestPeopleCount,
 								TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "requestBedroomCount"),
+				.addProperty(model.createProperty(ontNS + alignment.getRequestBedroomCount()),
 						model.createTypedLiteral(requestBedroomCount,
 								TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "requestMaxLakeDistance"),
+				.addProperty(model.createProperty(ontNS + alignment.getRequestMaxLakeDistance()),
 						model.createTypedLiteral(requestMaxLakeDistance,
 								TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "requestNearestCity"),
+				.addProperty(model.createProperty(ontNS + alignment.getRequestNearestCity()),
 						model.createTypedLiteral(requestNearestCity,
 								TypeMapper.getInstance().getTypeByName(XSD.xstring.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "requestMaxCityDistance"),
+				.addProperty(model.createProperty(ontNS + alignment.getRequestMaxCityDistance()),
 						model.createTypedLiteral(requestMaxCityDistance,
 								TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "requestDayCount"),
+				.addProperty(model.createProperty(ontNS + alignment.getRequestDayCount()),
 						model.createTypedLiteral(requestDayCount,
 								TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "requestStartDate"),
+				.addProperty(model.createProperty(ontNS + alignment.getRequestStartDate()),
 						model.createTypedLiteral(requestStartDate,
 								TypeMapper.getInstance().getTypeByName(XSD.date.getURI())))
 
-				.addProperty(model.createProperty(ontNS + "requestMaxDayShifts"), model.createTypedLiteral(requestMaxDayShifts,
+				.addProperty(model.createProperty(ontNS + alignment.getRequestMaxDayShifts()), model.createTypedLiteral(requestMaxDayShifts,
 						TypeMapper.getInstance().getTypeByName(XSD.integer.getURI())));
 
 		// Create mapsTo object
