@@ -1,54 +1,58 @@
 
 function updateRDF(rdfData, inputObject) {
-    const rdf = $rdf; // Alias for rdflib.js
-    const store = rdf.graph(); // Create a graph
+  const rdf = $rdf; // Alias for rdflib.js
+  const store = rdf.graph(); // Create a graph
 
-    // Parse the RDF/XML string with the base URI 'http://example.com'
-    rdf.parse(rdfData, store, 'http://example.com', 'application/rdf+xml');
+  // Parse the RDF/XML string with the base URI 'http://example.com'
+  rdf.parse(rdfData, store, 'http://example.com', 'application/rdf+xml');
 
-    // Dynamically update properties using inputObject
-    Object.keys(inputObject).forEach((propertyURI) => {
-        const value = inputObject[propertyURI];
-        const predicate = rdf.namedNode(propertyURI);
+  // Dynamically update properties using inputObject
+  Object.keys(inputObject).forEach((propertyURI) => {
+    const value = inputObject[propertyURI];
+    const predicate = rdf.namedNode(propertyURI);
 
-        // Find the subject with type BookingServiceRequest
-        const bookingRequest = store.any(
-            undefined,
-            rdf.namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"),
-            undefined // We dynamically match the object type if needed
+    // Find the subject with type BookingServiceRequest
+    const bookingRequest = store.any(
+      undefined,
+      rdf.namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"),
+      undefined // We dynamically match the object type if needed
+    );
+
+    if (bookingRequest) {
+      // Find the existing triple
+      const existingTriple = store.anyStatementMatching(bookingRequest, predicate);
+
+      if (existingTriple) {
+        const existingDatatype = existingTriple.object.datatype; // Retain existing datatype
+        store.remove(existingTriple); // Remove old triple
+        store.add(
+          bookingRequest,
+          predicate,
+          rdf.literal(value, existingDatatype) // Add new value with existing datatype
         );
+      } else {
+        // If no existing triple, add a new one without datatype assumption
+        store.add(
+          bookingRequest,
+          predicate,
+          rdf.literal(value)
+        );
+      }
+    }
+  });
 
-        if (bookingRequest) {
-            // Find the existing triple
-            const existingTriple = store.anyStatementMatching(bookingRequest, predicate);
+  // Serialize back to RDF/XML
+  let updatedRDF = rdf.serialize(null, store, 'http://example.com', 'application/rdf+xml');
 
-            if (existingTriple) {
-                const existingDatatype = existingTriple.object.datatype; // Retain existing datatype
-                store.remove(existingTriple); // Remove old triple
-                store.add(
-                    bookingRequest,
-                    predicate,
-                    rdf.literal(value, existingDatatype) // Add new value with existing datatype
-                );
-            } else {
-                // If no existing triple, add a new one without datatype assumption
-                store.add(
-                    bookingRequest,
-                    predicate,
-                    rdf.literal(value)
-                );
-            }
-        }
-    });
-
-    // Serialize back to RDF/XML
-    const updatedRDF = rdf.serialize(null, store, 'http://example.com', 'application/rdf+xml');
-    return updatedRDF;
+  // Post-process to remove `rdf:parseType="Resource"`
+  updatedRDF = updatedRDF.replace(/ rdf:parseType="Resource"/g, "");
+  
+  return updatedRDF;
 }
 
 function testAlign() {
-    // Original RDF/XML string
-    let rdfData = `<rdf:RDF
+  // Original RDF/XML string
+  let rdfData = `<rdf:RDF
     xmlns:ss="http://localhost:8080/sswap-servlet/"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:sswap="http://sswapmeet.sswap.info/sswap/"
@@ -111,19 +115,19 @@ function testAlign() {
 </rdf:RDF>
 `;
 
-    // Sample input object (full URIs as keys)
-    const inputObject = {
-        "http://example.com/requestPeopleCount": "4",
-        "http://example.com/requestDayCount": "7",
-        "http://example.com/requestMaxCityDistance": "100",
-        "http://example.com/requestBedroomCount": "2",
-        "http://example.com/requestBookerName": "John Doe",
-        "http://example.com/requestMaxLakeDistance": "111",
-        "http://example.com/requestStartDate": "2021-07-01",
-        "http://example.com/requestNearestCity": "Helsinki",
-        "http://example.com/requestMaxDayShifts": "1",
-    };
+  // Sample input object (full URIs as keys)
+  const inputObject = {
+    "http://example.com/requestPeopleCount": "4",
+    "http://example.com/requestDayCount": "7",
+    "http://example.com/requestMaxCityDistance": "100",
+    "http://example.com/requestBedroomCount": "2",
+    "http://example.com/requestBookerName": "John Doe",
+    "http://example.com/requestMaxLakeDistance": "111",
+    "http://example.com/requestStartDate": "2021-07-01",
+    "http://example.com/requestNearestCity": "Helsinki",
+    "http://example.com/requestMaxDayShifts": "1",
+  };
 
-    const updatedRDF = updateRDF(rdfData, inputObject);
-    console.log(updatedRDF);
+  let updatedRDF = updateRDF(rdfData, inputObject);
+  console.log(updatedRDF);
 }
