@@ -1,4 +1,4 @@
-package com.example.sswap;
+package com.example;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
@@ -13,7 +14,7 @@ import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.vocabulary.RDF;
 
-public class Extractor {
+public class ExtractorSSWAP {
 
 	public static Map<String, String> extractFieldsFromModel(Model model) {
 //		List<String> requestProperties = new ArrayList<String>();
@@ -59,4 +60,23 @@ public class Extractor {
 
 		return requestProperties;
 	}
+	
+    // Function to convert full URI map to local name map
+    public static Map<String, String> convertToLocalNameMap(Map<String, String> uriMap) {
+        Map<String, String> localNameMap = new HashMap<>();
+
+        for (Map.Entry<String, String> entry : uriMap.entrySet()) {
+            String fullURI = entry.getKey();
+            String value = entry.getValue();
+
+            // Use Jena Resource to extract the local name from the URI
+            Resource resource = ModelFactory.createDefaultModel().createResource(fullURI);
+            String localName = resource.getLocalName();
+
+            // Add local name as key with the original value
+            localNameMap.put(localName, value);
+        }
+
+        return localNameMap;
+    }
 }

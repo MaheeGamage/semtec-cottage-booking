@@ -17,7 +17,8 @@ public class OntologyAlignmentServiceOwnImpl implements IOntologyAlignmentServic
 	@Override
 	public OntologyAlignmentResult alignOntology(Model guestRdgModel) {
 		// Extract fields from the guest model
-		List<String> guestFields = Extractor.extractFieldsFromModel(guestRdgModel); //extractFieldsFromModel(guestRdgModel);
+		Map<String, String> guestFieldsMap = Extractor.extractFieldsFromModel(guestRdgModel);
+		List<String> guestFields = new ArrayList<>(guestFieldsMap.keySet());
 
 		// Define base model fields
 		List<String> baseFields = Constants.baseOntologyRequestFields;

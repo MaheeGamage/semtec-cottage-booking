@@ -1,3 +1,5 @@
+let rdfFile = "";
+
 function doQuery() {
 	const name = document.getElementById('inpName').value.trim();
 	const peopleCount = document.getElementById('inpPeopleCount').value.trim();
@@ -35,6 +37,18 @@ function doQuery() {
 		q_str += '&requestMaxDayShifts=' + encodeURIComponent(maxDayShifts);
 		q_str += '&sswapUrl=' + encodeURIComponent(sswapUrl);
 
+		const dataValueObj = {
+			requestBookerName: name,
+			requestPeopleCount: peopleCount,
+			requestBedroomCount: bedroomCount,
+			requestMaxLakeDistance: maxLakeDistance,
+			requestNearestCity: city,
+			requestMaxCityDistance: maxCityDistance,
+			requestDayCount: dayCount,
+			requestStartDate: startDate,
+			requestMaxDayShifts: maxDayShifts
+		}
+
 		// Define body content
 		// var bodyContent = {
 		// 	alignment: {
@@ -50,8 +64,16 @@ function doQuery() {
 		// 	}
 		// }
 
+		const finalAlignment = recreateJSON();
+		const rdfDataMap = Object.fromEntries(
+			Object.entries(finalAlignment).map(([key, uri]) => [uri, dataValueObj[key]])
+		);
+
+		const rig = updateRDF(rdfFile, rdfDataMap);
+
 		var bodyContent = { alignment: {} }
-		bodyContent.alignment = recreateJSON();
+		bodyContent.alignment = finalAlignment
+		bodyContent.rig = rig
 
 		// Convert body content to JSON
 		var bodyJson = JSON.stringify(bodyContent);
@@ -156,14 +178,16 @@ function onAlignmentResponse(response) {
 		const parsedResult = JSON.parse(response);
 		console.log(parsedResult);
 
+		rdfFile = parsedResult.rdfFile;
+
 		// On success:
 		document.getElementById('searchFormFieldSet').disabled = false;
-		displayAligmentData(parsedResult);
+		displayAligmentData(parsedResult.alignmentResults, parsedResult.sadiRequestProperties);
 
 		// After successful connection
-		document.getElementById('disconnectBtn').style.display = ''; 
+		document.getElementById('disconnectBtn').style.display = '';
 		document.getElementById('sswapServiceUrl').disabled = true;
-		document.getElementById('connectBtn').style.display = 'None'; 
+		document.getElementById('connectBtn').style.display = 'None';
 
 		// document.getElementById('modalMessage').innerText = 'Connected successfully!';
 		// document.getElementById('responseModal').style.display = 'block';
@@ -173,7 +197,7 @@ function onAlignmentResponse(response) {
 	}
 }
 
-function displayAligmentData(data) {
+function displayAligmentData(data, requestProperties) {
 	// Below is a sample 'data' JSON object to be used for testing
 	// const data = {
 	// 	"requestPeopleCount": "requestPeopleCount",
@@ -205,7 +229,7 @@ function displayAligmentData(data) {
 		select.classList.add('alignment-display-value');
 
 		// Add options (keys from the JSON object)
-		Object.values(data).forEach(optionValue => {
+		requestProperties.forEach(optionValue => {
 			const option = document.createElement('option');
 			option.value = optionValue;
 			option.textContent = optionValue;
@@ -223,7 +247,7 @@ function displayAligmentData(data) {
 		container.appendChild(row);
 		container.style.display = 'block';
 	});
-	
+
 	initializeDropdowns();
 }
 
@@ -250,35 +274,37 @@ function recreateJSON() {
 }
 
 function initializeDropdowns() {
-    const container = document.getElementById('keyValueContainer');
-    const dropdowns = container.querySelectorAll('.alignment-display-value'); // Select all dropdowns
+	const container = document.getElementById('keyValueContainer');
+	const dropdowns = container.querySelectorAll('.alignment-display-value'); // Select all dropdowns
 
-    dropdowns.forEach((dropdown) => {
-        dropdown.addEventListener('change', (event) => {
-            const selectedValue = event.target.value; // New value
-            const previousValue = event.target.dataset.previousValue; // Old value
+	dropdowns.forEach((dropdown) => {
+		dropdown.addEventListener('change', (event) => {
+			const selectedValue = event.target.value; // New value
+			const previousValue = event.target.dataset.previousValue; // Old value
 
-            // Find the dropdown currently holding the new value
-            dropdowns.forEach((otherDropdown) => {
-                if (otherDropdown !== event.target && otherDropdown.value === selectedValue) {
-                    // Swap the values
-                    otherDropdown.value = previousValue;
-                }
-            });
+			// Find the dropdown currently holding the new value
+			dropdowns.forEach((otherDropdown) => {
+				if (otherDropdown !== event.target && otherDropdown.value === selectedValue) {
+					// Swap the values
+					otherDropdown.value = previousValue;
+				}
+			});
 
-            // Update the dataset with the current value
-            event.target.dataset.previousValue = selectedValue;
-        });
+			// Update the dataset with the current value
+			event.target.dataset.previousValue = selectedValue;
+		});
 
-        // Initialize the dataset with the default value
-        dropdown.dataset.previousValue = dropdown.value;
-    });
+		// Initialize the dataset with the default value
+		dropdown.dataset.previousValue = dropdown.value;
+	});
 }
 
 function onDisconnect() {
-	document.getElementById('disconnectBtn').style.display = 'none'; 
+	document.getElementById('disconnectBtn').style.display = 'none';
 	document.getElementById('sswapServiceUrl').disabled = false;
-	document.getElementById('connectBtn').style.display = ''; 
+	document.getElementById('connectBtn').style.display = '';
+
+	rdfFile = "";
 
 	const keyValueContainer = document.getElementById('keyValueContainer');
 	keyValueContainer.innerHTML = '';

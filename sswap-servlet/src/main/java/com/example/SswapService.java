@@ -3,6 +3,8 @@ package com.example;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.io.InputStream;
 
 import javax.servlet.ServletException;
@@ -88,7 +90,11 @@ public class SswapService extends HttpServlet {
 
 		// Parse the RDF to extract `hasMapping` section values
 		try {
-			JSONObject jObj = ServiceUtil.extract1(ontModel);
+			
+			Map<String, String> requestFieldsMap = ExtractorSSWAP.extractFieldsFromModel(ontModel);
+			Map<String, String> requestFieldsMapWithLocalValue = ExtractorSSWAP.convertToLocalNameMap(requestFieldsMap);
+			
+			JSONObject jObj = new JSONObject(requestFieldsMapWithLocalValue);
 //			resp.getWriter().write(jObj.toString());
 
 			RequestParams params = new RequestParams();

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,7 +95,10 @@ public class OntologyAlignment extends HttpServlet {
 //			Map<String, String> alignment = performRandomAlignment(parameters);
 
 			OntologyAlignmentResult results = ontologyAligner.alignOntology(rdgModel);
-			List<String> extractedSadiRequestProperties = Extractor.extractFieldsFromModel(rdgModel);
+			
+			Map<String, String> guestFieldsMap = Extractor.extractFieldsFromModel(rdgModel);
+			List<String> extractedSadiRequestProperties = new ArrayList<>(guestFieldsMap.keySet());
+			
 			String rdfModelContentInXML = convertModelToRdfXmlString(rdgModel);
 
 			OntologyAlignmentResponse ontologyAlignmentResponse = new OntologyAlignmentResponse(results,
