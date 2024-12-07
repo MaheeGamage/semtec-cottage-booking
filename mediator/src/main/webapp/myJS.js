@@ -176,7 +176,6 @@ function onAlignmentResponse(response) {
 	try {
 		// Parse the result to ensure it's a JSON object
 		const parsedResult = JSON.parse(response);
-		console.log(parsedResult);
 
 		rdfFile = parsedResult.rdfFile;
 
@@ -268,8 +267,6 @@ function recreateJSON() {
 		const value = row.querySelector('.alignment-display-value').value;   // Get the selected value
 		result[key] = value; // Add to the JSON object
 	});
-
-	console.log(result); // Log the reconstructed JSON
 	return result; // Return the JSON object
 }
 

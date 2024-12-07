@@ -129,7 +129,6 @@ function testAlign() {
   };
 
   let updatedRDF = updateRDF(rdfData, inputObject);
-  console.log(updatedRDF);
 }
 
 
@@ -163,6 +162,8 @@ function updateRDF(rdfData, inputObject) {
 
   // Post-process to remove `rdf:parseType="Resource"`
   rigStr = rigStr.replace(/ rdf:parseType="Resource"/g, "");
+
+  console.log("Final RIG:", rigStr);
 
   return rigStr;
 }
