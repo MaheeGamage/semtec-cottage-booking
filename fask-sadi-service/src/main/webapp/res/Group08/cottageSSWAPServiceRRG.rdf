@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:sswap="http://sswapmeet.sswap.info/sswap/"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:resource="http://localhost:8080/cottageSSWAPService/"
+         xmlns:cottage="http://localhost:8080/cottageSSWAPService/res/cottageSSWAPServiceOntology.owl#">
+
+  <rdf:Description rdf:about="http://localhost:8080/cottageSSWAPService/cottageBookingService">
+    <rdf:type rdf:resource="http://sswapmeet.sswap.info/sswap/Resource"/>
+    <rdf:type rdf:resource="http://localhost:8080/cottageSSWAPService/res/cottageSSWAPServiceOntology.owl#CottageBookingService"/>
+    <sswap:providedBy rdf:resource="http://localhost:8080/cottageSSWAPService/Booking"/>
+    <sswap:name>Cottage Booking Service</sswap:name>
+    <sswap:oneLineDescription>A service that accepts a booking query to return set of cottage booking offers.</sswap:oneLineDescription>
+    <sswap:operatesOn>
+      <sswap:Graph>
+        <sswap:hasMapping>
+          <sswap:Subject>
+            <rdf:type rdf:resource="http://localhost:8080/cottageSSWAPService/res/cottageSSWAPServiceOntology.owl#BookingQuery"/>
+            <cottage:hasQueryBookerName rdf:datatype="xsd:string">John Doe</cottage:hasQueryBookerName>
+            <cottage:hasMinPlaces rdf:datatype="xsd:int">2</cottage:hasMinPlaces>
+            <cottage:hasMinBedrooms rdf:datatype="xsd:int">2</cottage:hasMinBedrooms>
+            <cottage:hasQueryClosestCity rdf:datatype="xsd:string">Helsinki</cottage:hasQueryClosestCity>
+            <cottage:hasMaxCityDistance rdf:datatype="xsd:int">5</cottage:hasMaxCityDistance>
+            <cottage:hasMaxLakeDistance rdf:datatype="xsd:int">50</cottage:hasMaxLakeDistance>
+            <cottage:hasQueryStartDate rdf:datatype="xsd:string">22.01.2025</cottage:hasQueryStartDate>
+            <cottage:hasLengthOfStay rdf:datatype="xsd:int">2</cottage:hasLengthOfStay>
+            <cottage:hasMaxPossibleShift rdf:datatype="xsd:int">1</cottage:hasMaxPossibleShift>
+            <sswap:mapsTo>
+              <sswap:Object>
+                <rdf:type rdf:resource="http://localhost:8080/cottageSSWAPService/res/cottageSSWAPServiceOntology.owl#BookingOffer"/>
+                <cottage:hasBookingNumber rdf:datatype="xsd:int">74933</cottage:hasBookingNumber>
+                <cottage:hasBookerName rdf:datatype="xsd:string">John Doe</cottage:hasBookerName>
+                <cottage:hasAddress rdf:datatype="xsd:string">Pahvitie 234</cottage:hasAddress>
+                <cottage:hasImgUrl rdf:datatype="xsd:anyURI">https://cdn.pixabay.com/photo/2017/03/27/14/48/abandoned-2179173_960_720.jpg</cottage:hasImgUrl>
+                <cottage:hasBedrooms rdf:datatype="xsd:int">5</cottage:hasBedrooms>
+                <cottage:hasPlaces rdf:datatype="xsd:int">18</cottage:hasPlaces>
+                <cottage:hasClosestCity rdf:datatype="xsd:string">Tampere</cottage:hasClosestCity>
+                <cottage:hasCityDistance rdf:datatype="xsd:int">10</cottage:hasCityDistance>
+                <cottage:hasStartDate rdf:datatype="xsd:string">22.01.2025</cottage:hasStartDate>
+                <cottage:hasEndDate rdf:datatype="xsd:string">24.01.2025</cottage:hasEndDate>
+                <cottage:hasLakeDistance rdf:datatype="xsd:int">300</cottage:hasLakeDistance>
+              </sswap:Object>
+            </sswap:mapsTo>
+
+            <sswap:mapsTo>
+              <sswap:Object>
+                <rdf:type rdf:resource="http://localhost:8080/cottageSSWAPService/res/cottageSSWAPServiceOntology.owl#BookingOffer"/>
+                <cottage:hasBookingNumber rdf:datatype="xsd:int">74573</cottage:hasBookingNumber>
+                <cottage:hasBookerName rdf:datatype="xsd:string">John Doe</cottage:hasBookerName>
+                <cottage:hasAddress rdf:datatype="xsd:string">Pahvitie 234</cottage:hasAddress>
+                <cottage:hasImgUrl rdf:datatype="xsd:anyURI">https://cdn.pixabay.com/photo/2017/03/27/14/48/abandoned-2179173_960_720.jpg</cottage:hasImgUrl>
+                <cottage:hasBedrooms rdf:datatype="xsd:int">5</cottage:hasBedrooms>
+                <cottage:hasPlaces rdf:datatype="xsd:int">18</cottage:hasPlaces>
+                <cottage:hasClosestCity rdf:datatype="xsd:string">Tampere</cottage:hasClosestCity>
+                <cottage:hasCityDistance rdf:datatype="xsd:int">10</cottage:hasCityDistance>
+                <cottage:hasStartDate rdf:datatype="xsd:string">23.01.2025</cottage:hasStartDate>
+                <cottage:hasEndDate rdf:datatype="xsd:string">25.01.2025</cottage:hasEndDate>
+                <cottage:hasLakeDistance rdf:datatype="xsd:int">300</cottage:hasLakeDistance>
+              </sswap:Object>
+            </sswap:mapsTo>
+
+          </sswap:Subject>
+        </sswap:hasMapping>
+
+      </sswap:Graph>
+    </sswap:operatesOn>
+
+  </rdf:Description>
+
+</rdf:RDF>

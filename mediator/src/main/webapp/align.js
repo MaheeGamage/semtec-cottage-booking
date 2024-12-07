@@ -162,8 +162,10 @@ function updateRDF(rdfData, inputObject) {
 
   // Post-process to remove `rdf:parseType="Resource"`
   rigStr = rigStr.replace(/ rdf:parseType="Resource"/g, "");
-
-  console.log("Final RIG:", rigStr);
+  
+  console.groupCollapsed('Final RIG');
+  console.log(rigStr);
+  console.groupEnd();
 
   return rigStr;
 }

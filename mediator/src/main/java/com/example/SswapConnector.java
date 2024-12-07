@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.jena.rdf.model.Model;
@@ -17,6 +18,7 @@ import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 
 import com.example.align.OntologyAlignmentResult;
+import com.example.sswap.Extractor;
 
 public class SswapConnector {
 
@@ -92,7 +94,8 @@ public class SswapConnector {
 					// Print the Model to verify
 //		            model.write(System.out, "TURTLE");
 
-					ArrayList<Map<String, String>> bookingData = MediatorServiceUtil.extractBookingsFromRRG(model);
+//					ArrayList<Map<String, String>> bookingData = MediatorServiceUtil.extractBookingsFromRRG(model);
+					List<Map<String, String>> bookingData = Extractor.extractResultsFromModel(model);
 
 					for (Map<String, String> singleBookingDataMap : bookingData) {
 						bookingList.add(new MediatorBookingSuggestionResponse(singleBookingDataMap));
