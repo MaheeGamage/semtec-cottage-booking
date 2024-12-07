@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -27,13 +28,15 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import com.example.sswap.Extractor;
+
 //JSON Handling
 import com.google.gson.Gson;
 
-//Utility Classes
-import java.util.Random;
-
 import org.apache.jena.rdf.model.*;
+
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 
 /**
  * Servlet implementation class OntologyAlignment
@@ -58,8 +61,8 @@ public class OntologyAlignment extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 //		response.getWriter().append("Served at: ").append(request.getContextPath());
-		
-		IOntologyAlignmentService ontologyAligner = new OntologyAligner1();
+
+		IOntologyAlignmentService ontologyAligner = new OntologyAlignmentServiceOwnImpl();
 
 		/**
 		 * 1. Recieve the request from FE 2. Send request to SSWAP get endpoint and get
@@ -78,22 +81,27 @@ public class OntologyAlignment extends HttpServlet {
 		try {
 			// Step 2: Fetch RDG file from provided URL
 			String rdgContent = fetchRDGContent(rdgUrl);
-			
-		    // Parse the RDG RDF content as a Jena Model
-		    StringReader rdgReader = new StringReader(rdgContent); // rdgContent is the String containing RDG XML
-		    Model rdgModel = ModelFactory.createDefaultModel();
-		    rdgModel.read(rdgReader, null, "RDF/XML");
+
+			// Parse the RDG RDF content as a Jena Model
+			StringReader rdgReader = new StringReader(rdgContent); // rdgContent is the String containing RDG XML
+			Model rdgModel = ModelFactory.createDefaultModel();
+			rdgModel.read(rdgReader, null, "RDF/XML");
 
 			// Step 3: Parse RDG XML to extract request parameters
 //			Map<String, String> parameters = parseRDG(rdgModel);
 
 			// Step 4: Perform random alignment
 //			Map<String, String> alignment = performRandomAlignment(parameters);
-		    
-		    OntologyAlignmentResult results = ontologyAligner.alignOntology(rdgModel);
+
+			OntologyAlignmentResult results = ontologyAligner.alignOntology(rdgModel);
+			List<String> extractedSadiRequestProperties = Extractor.extractFieldsFromModel(rdgModel);
+			String rdfModelContentInXML = convertModelToRdfXmlString(rdgModel);
+
+			OntologyAlignmentResponse ontologyAlignmentResponse = new OntologyAlignmentResponse(results,
+					extractedSadiRequestProperties, rdfModelContentInXML);
 
 			// Step 5: Convert alignment to JSON and send response
-			String jsonResponse = new Gson().toJson(results);
+			String jsonResponse = new Gson().toJson(ontologyAlignmentResponse);
 			response.setContentType("application/json");
 			response.setStatus(HttpServletResponse.SC_OK);
 			response.getWriter().write(jsonResponse);
@@ -147,60 +155,74 @@ public class OntologyAlignment extends HttpServlet {
 	}
 
 	private Map<String, String> parseRDG(Model rdgModel) throws Exception {
-	    // Initialize a map to hold parsed data
-	    Map<String, String> parsedData = new HashMap<>();
+		// Initialize a map to hold parsed data
+		Map<String, String> parsedData = new HashMap<>();
 
-	    // Define the base URI for the RDF structure (sswap:Resource)
-	    Resource sswapResource = rdgModel.createResource("http://localhost:8080/sswap-servlet/bookingService");
+		// Define the base URI for the RDF structure (sswap:Resource)
+		Resource sswapResource = rdgModel.createResource("http://localhost:8080/sswap-servlet/bookingService");
 
-	    // Extract the <sswap:operatesOn> -> <sswap:Graph> -> <sswap:hasMapping> -> <sswap:Subject> path
-	    StmtIterator statements = rdgModel.listStatements(
-	        sswapResource, rdgModel.createProperty("http://sswapmeet.sswap.info/sswap/operatesOn"), (RDFNode) null);
+		// Extract the <sswap:operatesOn> -> <sswap:Graph> -> <sswap:hasMapping> ->
+		// <sswap:Subject> path
+		StmtIterator statements = rdgModel.listStatements(sswapResource,
+				rdgModel.createProperty("http://sswapmeet.sswap.info/sswap/operatesOn"), (RDFNode) null);
 
-	    while (statements.hasNext()) {
-	        Statement operatesOnStatement = statements.next();
-	        Resource operatesOnGraph = operatesOnStatement.getObject().asResource();
-	        
-	        // Extract all the <sswap:hasMapping> -> <sswap:Subject> within the <sswap:Graph>
-	        StmtIterator mappingStatements = rdgModel.listStatements(
-	            operatesOnGraph, rdgModel.createProperty("http://sswapmeet.sswap.info/sswap/hasMapping"), (RDFNode) null);
-	        
-	        while (mappingStatements.hasNext()) {
-	            Statement mappingStatement = mappingStatements.next();
-	            Resource subjectResource = mappingStatement.getObject().asResource();
-	            
-	            // Extract the individual fields (requestBookerName, requestPeopleCount, etc.)
-	            StmtIterator fieldStatements = rdgModel.listStatements(
-	                subjectResource, null, (RDFNode) null); // Get all predicates and their objects under Subject
+		while (statements.hasNext()) {
+			Statement operatesOnStatement = statements.next();
+			Resource operatesOnGraph = operatesOnStatement.getObject().asResource();
 
-	            while (fieldStatements.hasNext()) {
-	                Statement fieldStatement = fieldStatements.next();
-	                Property property = fieldStatement.getPredicate();
-	                RDFNode value = fieldStatement.getObject();
-	                
-	                // Filter and extract the relevant fields (requestBookerName, requestPeopleCount)
-	                if (value.isLiteral()) {
-	                    String fieldName = property.getLocalName();  // Use property local name for field name
-	                    String fieldValue = value.asLiteral().getString();
-	                    parsedData.put(fieldName, fieldValue);
-	                }
-	            }
-	        }
-	    }
+			// Extract all the <sswap:hasMapping> -> <sswap:Subject> within the
+			// <sswap:Graph>
+			StmtIterator mappingStatements = rdgModel.listStatements(operatesOnGraph,
+					rdgModel.createProperty("http://sswapmeet.sswap.info/sswap/hasMapping"), (RDFNode) null);
 
-	    // Return the parsed data as a Map
-	    return parsedData;
-	}
+			while (mappingStatements.hasNext()) {
+				Statement mappingStatement = mappingStatements.next();
+				Resource subjectResource = mappingStatement.getObject().asResource();
 
+				// Extract the individual fields (requestBookerName, requestPeopleCount, etc.)
+				StmtIterator fieldStatements = rdgModel.listStatements(subjectResource, null, (RDFNode) null); // Get
+																												// all
+																												// predicates
+																												// and
+																												// their
+																												// objects
+																												// under
+																												// Subject
 
-	private Map<String, String> performRandomAlignment(Map<String, String> parameters) {
-		Map<String, String> alignment = new HashMap<>();
-		Random random = new Random();
+				while (fieldStatements.hasNext()) {
+					Statement fieldStatement = fieldStatements.next();
+					Property property = fieldStatement.getPredicate();
+					RDFNode value = fieldStatement.getObject();
 
-		for (Map.Entry<String, String> entry : parameters.entrySet()) {
-			alignment.put(entry.getKey(), "AlignedValue_" + random.nextInt(100)); // Random mapping
+					// Filter and extract the relevant fields (requestBookerName,
+					// requestPeopleCount)
+					if (value.isLiteral()) {
+						String fieldName = property.getLocalName(); // Use property local name for field name
+						String fieldValue = value.asLiteral().getString();
+						parsedData.put(fieldName, fieldValue);
+					}
+				}
+			}
 		}
-		return alignment;
+
+		// Return the parsed data as a Map
+		return parsedData;
 	}
+
+    public static String convertModelToRdfXmlString(Model model) {
+        try {
+            // Create a ByteArrayOutputStream to hold the RDF/XML string
+            OutputStream outputStream = new ByteArrayOutputStream();
+
+            // Write the model in RDF/XML format to the output stream
+            model.write(outputStream, "RDF/XML");
+
+            // Convert the output stream to a string
+            return outputStream.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 }
