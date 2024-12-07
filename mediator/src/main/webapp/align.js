@@ -1,5 +1,5 @@
 
-function updateRDF(rdfData, inputObject) {
+function updateRDFOld(rdfData, inputObject) {
   const rdf = $rdf; // Alias for rdflib.js
   const store = rdf.graph(); // Create a graph
 
@@ -46,7 +46,7 @@ function updateRDF(rdfData, inputObject) {
 
   // Post-process to remove `rdf:parseType="Resource"`
   updatedRDF = updatedRDF.replace(/ rdf:parseType="Resource"/g, "");
-  
+
   return updatedRDF;
 }
 
@@ -130,4 +130,39 @@ function testAlign() {
 
   let updatedRDF = updateRDF(rdfData, inputObject);
   console.log(updatedRDF);
+}
+
+
+function updateRDF(rdfData, inputObject) {
+  const graph = $rdf.graph();
+  
+  // Parse the RDF data into the graph
+  $rdf.parse(rdfData, graph, 'http://example.org/', 'application/rdf+xml');
+
+  // Dynamically update properties using inputObject
+  Object.keys(inputObject).forEach((propertyURI) => {
+    const newValue = inputObject[propertyURI];
+
+    // Define the predicate you're searching for
+    const predicate = $rdf.sym(propertyURI);
+
+    graph.statementsMatching(null, predicate, null).forEach((stmt) => {
+      const existingDatatype = stmt.object.datatype; // Retain existing datatype
+
+      // Remove the old triple
+      graph.remove(stmt);
+
+      // Create a new triple with the updated value
+      const newTriple = $rdf.triple(stmt.subject, predicate, $rdf.literal(newValue, existingDatatype));
+      graph.add(newTriple);
+    });
+  });
+
+  // Serialize back to RDF/XML
+  let rigStr = $rdf.serialize(null, graph, 'http://example.com', 'application/rdf+xml');
+
+  // Post-process to remove `rdf:parseType="Resource"`
+  rigStr = rigStr.replace(/ rdf:parseType="Resource"/g, "");
+
+  return rigStr;
 }

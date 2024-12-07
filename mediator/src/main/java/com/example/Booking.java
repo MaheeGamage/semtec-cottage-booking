@@ -1,7 +1,9 @@
 package com.example;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -9,6 +11,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -109,7 +114,16 @@ public class Booking extends HttpServlet {
 			
 			String sswapUrl = request.getParameter("sswapUrl");
 
-			results = SswapConnector.retrieveDataFromSswap(params, mediatorRequestObject.getAlignment(), sswapUrl);
+//			results = SswapConnector.retrieveDataFromSswap(params, mediatorRequestObject.getAlignment(), sswapUrl);
+			
+	        // Convert the RDF XML string to an InputStream
+	        ByteArrayInputStream inputStream = new ByteArrayInputStream(mediatorRequestObject.getRig().getBytes(StandardCharsets.UTF_8));
+
+	        // Create a Jena Model and read the RDF XML content
+	        Model rigModel = ModelFactory.createDefaultModel();
+	        rigModel.read(inputStream, null, "RDF/XML");
+	        
+			results = SswapConnector.retrieveDataFromSswapWithRig(rigModel, sswapUrl);
 			
 		}
 		

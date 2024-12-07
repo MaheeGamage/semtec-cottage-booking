@@ -19,12 +19,19 @@ import org.apache.jena.riot.RDFDataMgr;
 import com.example.align.OntologyAlignmentResult;
 
 public class SswapConnector {
-	
-//	private static String sswapURL = "http://localhost:8080/sswap-servlet/cottage";
 
-	public static ArrayList<MediatorBookingSuggestionResponse> retrieveDataFromSswap(RequestParams requestParams, OntologyAlignmentResult alignment, String sswapUrl) {
-		ArrayList<MediatorBookingSuggestionResponse> bookingList = new ArrayList<>();
+//	private static String sswapURL = "http://localhost:8080/sswap-servlet/cottage";
+	
+	public static ArrayList<MediatorBookingSuggestionResponse> retrieveDataFromSswap(RequestParams requestParams,
+			OntologyAlignmentResult alignment, String sswapUrl){
 		
+		Model rigModel = MediatorRDGGenerator.generateRequestSswapResources(requestParams, alignment);
+		return retrieveDataFromSswapWithRig(rigModel, sswapUrl);
+	}
+
+	public static ArrayList<MediatorBookingSuggestionResponse> retrieveDataFromSswapWithRig(Model rigModel, String sswapUrl) {
+		ArrayList<MediatorBookingSuggestionResponse> bookingList = new ArrayList<>();
+
 		try {
 			// Define the target URL
 			URL url = new URL(sswapUrl);
@@ -38,12 +45,12 @@ public class SswapConnector {
 			connection.setRequestProperty("Content-Type", "application/rdf+xml");
 			connection.setDoOutput(true);
 
-			Model rdgModel = MediatorRDGGenerator.generateRequestSswapResources(requestParams, alignment);
+//			Model rigModel = MediatorRDGGenerator.generateRequestSswapResources(requestParams, alignment);
 			StringWriter modelOutput = new StringWriter();
 //			rdgModel.write(modelOutput, "TURTLE");
-			rdgModel.write(modelOutput, "RDF/XML");
+			rigModel.write(modelOutput, "RDF/XML");
 			String turtleData = modelOutput.toString();
-			
+
 			// Send the Turtle data
 			try (OutputStream os = connection.getOutputStream()) {
 				byte[] input = turtleData.getBytes("utf-8");
@@ -68,32 +75,32 @@ public class SswapConnector {
 
 				// Print response body
 //				System.out.println("Response Body: " + response.toString());
-				
+
 				// Convert response back to rdf model
-		        try {
-		            // Convert Turtle string to InputStream
-		            ByteArrayInputStream inputStream = new ByteArrayInputStream(response.toString().getBytes(StandardCharsets.UTF_8));
+				try {
+					// Convert Turtle string to InputStream
+					ByteArrayInputStream inputStream = new ByteArrayInputStream(
+							response.toString().getBytes(StandardCharsets.UTF_8));
 
-		            // Create an empty Jena Model
-		            Model model = ModelFactory.createDefaultModel();
+					// Create an empty Jena Model
+					Model model = ModelFactory.createDefaultModel();
 
-		            // Read the Turtle content into the Model
-		            RDFDataMgr.read(model, inputStream, Lang.RDFXML);
+					// Read the Turtle content into the Model
+					RDFDataMgr.read(model, inputStream, Lang.RDFXML);
 
 //		            System.out.println("RDF Model Out");
-		            // Print the Model to verify
+					// Print the Model to verify
 //		            model.write(System.out, "TURTLE");
-		            
-		            ArrayList<Map<String, String>> bookingData = MediatorServiceUtil.extractBookingsFromRRG(model);
-		            
-		            
-		            for (Map<String, String> singleBookingDataMap : bookingData) {
-		            	bookingList.add(new MediatorBookingSuggestionResponse(singleBookingDataMap));
-		            }
 
-		        } catch (Exception e) {
-		            e.printStackTrace();
-		        }
+					ArrayList<Map<String, String>> bookingData = MediatorServiceUtil.extractBookingsFromRRG(model);
+
+					for (Map<String, String> singleBookingDataMap : bookingData) {
+						bookingList.add(new MediatorBookingSuggestionResponse(singleBookingDataMap));
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 
 			} else {
 				System.out.println("Error sending request. Response Code: " + responseCode);
@@ -105,7 +112,7 @@ public class SswapConnector {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return bookingList;
 	}
 
