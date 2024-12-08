@@ -17,7 +17,7 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 
-import com.example.align.OntologyAlignmentResult;
+import com.example.align.RequestOntologyAlignmentResult;
 import com.example.sswap.Extractor;
 
 public class SswapConnector {
@@ -25,7 +25,7 @@ public class SswapConnector {
 //	private static String sswapURL = "http://localhost:8080/sswap-servlet/cottage";
 	
 	public static ArrayList<MediatorBookingSuggestionResponse> retrieveDataFromSswap(RequestParams requestParams,
-			OntologyAlignmentResult alignment, String sswapUrl){
+			RequestOntologyAlignmentResult alignment, String sswapUrl){
 		
 		Model rigModel = MediatorRDGGenerator.generateRequestSswapResources(requestParams, alignment);
 		return retrieveDataFromSswapWithRig(rigModel, sswapUrl);
@@ -95,7 +95,7 @@ public class SswapConnector {
 //		            model.write(System.out, "TURTLE");
 
 //					ArrayList<Map<String, String>> bookingData = MediatorServiceUtil.extractBookingsFromRRG(model);
-					List<Map<String, String>> bookingData = Extractor.extractResultsFromModel(model);
+					List<Map<String, String>> bookingData = Extractor.extractResultsFromModel(model, false);
 
 					for (Map<String, String> singleBookingDataMap : bookingData) {
 						bookingList.add(new MediatorBookingSuggestionResponse(singleBookingDataMap));

@@ -10,7 +10,7 @@ import org.apache.jena.datatypes.TypeMapper;
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.vocabulary.XSD;
 
-import com.example.align.OntologyAlignmentResult;
+import com.example.align.RequestOntologyAlignmentResult;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -114,7 +114,7 @@ public class MediatorRDGGenerator {
 
 	}
 
-	public static Model generateRequestSswapResources(RequestParams bookingRequest, OntologyAlignmentResult alignment) {
+	public static Model generateRequestSswapResources(RequestParams bookingRequest, RequestOntologyAlignmentResult alignment) {
 		// Define namespaces
 		String sswapNS = "http://sswapmeet.sswap.info/sswap/";
 		String ontNS = "http://localhost:8080/SW_project/cottagebooking#";

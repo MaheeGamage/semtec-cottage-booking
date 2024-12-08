@@ -12,11 +12,10 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 
-public class OntologyAligner1 implements IOntologyAlignmentService {
+public class OntologyAligner1 { //implements IOntologyAlignmentService
 	
-	@Override
-	public OntologyAlignmentResult alignOntology(Model rdgModel) {
-		OntologyAlignmentResult result = new OntologyAlignmentResult();
+	public RequestOntologyAlignmentResult alignOntologyOld(Model rdgModel) {
+		RequestOntologyAlignmentResult result = new RequestOntologyAlignmentResult();
 		// Initialize a map to hold parsed data
 		Map<String, String> parsedData = new HashMap<>();
 

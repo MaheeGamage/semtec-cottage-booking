@@ -16,29 +16,55 @@ public class OntologyAlignmentServiceOwnImpl implements IOntologyAlignmentServic
 
 	@Override
 	public OntologyAlignmentResult alignOntology(Model guestRdgModel) {
-		// Extract fields from the guest model
-		Map<String, String> guestFieldsMap = Extractor.extractFieldsFromModel(guestRdgModel);
-		List<String> guestFields = new ArrayList<>(guestFieldsMap.keySet());
+		// Extract request fields from the guest model
+		Map<String, String> guestRequestFieldsMap = Extractor.extractFieldsFromModel(guestRdgModel);
+		List<String> guestRequestFields = new ArrayList<>(guestRequestFieldsMap.keySet());
 
 		// Define base model fields
-		List<String> baseFields = Constants.baseOntologyRequestFields;
+		List<String> baseRequestFields = Constants.baseOntologyRequestFields;
 
 		// Perform alignment
-		Map<String, String> alignedFields = alignFields(guestFields, baseFields);
+		Map<String, String> alignedRequestFields = alignFields(guestRequestFields, baseRequestFields);
 
 		// Populate OntologyAlignmentResult
-		OntologyAlignmentResult result = new OntologyAlignmentResult();
-		result.setRequestPeopleCount(alignedFields.get("requestPeopleCount"));
-		result.setRequestDayCount(alignedFields.get("requestDayCount"));
-		result.setRequestMaxCityDistance(alignedFields.get("requestMaxCityDistance"));
-		result.setRequestBedroomCount(alignedFields.get("requestBedroomCount"));
-		result.setRequestBookerName(alignedFields.get("requestBookerName"));
-		result.setRequestMaxLakeDistance(alignedFields.get("requestMaxLakeDistance"));
-		result.setRequestStartDate(alignedFields.get("requestStartDate"));
-		result.setRequestNearestCity(alignedFields.get("requestNearestCity"));
-		result.setRequestMaxDayShifts(alignedFields.get("requestMaxDayShifts"));
+		RequestOntologyAlignmentResult requestResult = new RequestOntologyAlignmentResult();
+		requestResult.setRequestPeopleCount(alignedRequestFields.get("requestPeopleCount"));
+		requestResult.setRequestDayCount(alignedRequestFields.get("requestDayCount"));
+		requestResult.setRequestMaxCityDistance(alignedRequestFields.get("requestMaxCityDistance"));
+		requestResult.setRequestBedroomCount(alignedRequestFields.get("requestBedroomCount"));
+		requestResult.setRequestBookerName(alignedRequestFields.get("requestBookerName"));
+		requestResult.setRequestMaxLakeDistance(alignedRequestFields.get("requestMaxLakeDistance"));
+		requestResult.setRequestStartDate(alignedRequestFields.get("requestStartDate"));
+		requestResult.setRequestNearestCity(alignedRequestFields.get("requestNearestCity"));
+		requestResult.setRequestMaxDayShifts(alignedRequestFields.get("requestMaxDayShifts"));
+		
+		
+		// Extract response fields from the guest model
+		Map<String, String> guestResponseFieldsMap = Extractor.extractResultsFromModel(guestRdgModel, true).get(0);
+		List<String> guestResponseFields = new ArrayList<>(guestResponseFieldsMap.keySet());
+		
+		// Define base model fields
+		List<String> baseResponseFields = Constants.baseOntologyResponseFields;
 
-		return result;
+		// Perform alignment
+		Map<String, String> alignedResponseFields = alignFields(guestResponseFields, baseResponseFields);
+		
+		// Populate OntologyAlignmentResult
+		ResponseOntologyAlignmentResult responseResult = new ResponseOntologyAlignmentResult();
+		responseResult.setResponseBookerName(alignedResponseFields.get("responseBookerName"));
+		responseResult.setResponseBookingNumber(alignedResponseFields.get("responseBookingNumber"));
+		responseResult.setResponseCottageAddress(alignedResponseFields.get("responseCottageAddress"));
+		responseResult.setResponseCottageImageUrl(alignedResponseFields.get("responseCottageImageUrl"));
+		responseResult.setResponseNumberOfPlaces(alignedResponseFields.get("responseNumberOfPlaces"));
+		responseResult.setResponseNumberOfBedrooms(alignedResponseFields.get("responseNumberOfBedrooms"));
+		responseResult.setResponseDistanceToLake(alignedResponseFields.get("responseDistanceToLake"));
+		responseResult.setResponseNearestCity(alignedResponseFields.get("responseNearestCity"));
+		responseResult.setResponseDistanceToCity(alignedResponseFields.get("responseDistanceToCity"));
+		responseResult.setResponseBookingStartDate(alignedResponseFields.get("responseBookingStartDate"));
+		responseResult.setResponseBookingEndDate(alignedResponseFields.get("responseBookingEndDate"));
+
+		OntologyAlignmentResult alignResults = new OntologyAlignmentResult(requestResult, responseResult);
+		return alignResults;
 	}
 
 	private Map<String, String> alignFields(List<String> guestFields, List<String> baseFields) {

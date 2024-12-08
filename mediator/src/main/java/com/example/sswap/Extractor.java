@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.jena.datatypes.DatatypeFormatException;
+import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
@@ -61,7 +63,7 @@ public class Extractor {
 		return requestProperties;
 	}
 
-	public static List<Map<String, String>> extractResultsFromModel(Model model) {
+	public static List<Map<String, String>> extractResultsFromModel(Model model, boolean isFullUri) {
 		// Define namespace URIs
 		String sswapNs = "http://sswapmeet.sswap.info/sswap/";
 
@@ -100,14 +102,41 @@ public class Extractor {
 						Map<String, String> result = new HashMap<>();
 						StmtIterator resultIterator = resultObject.listProperties();
 						while (resultIterator.hasNext()) {
-							Statement resultStmt = resultIterator.nextStatement();
-							
-							String object = resultStmt.getObject().isLiteral() ? resultStmt.getObject().asLiteral().getValue().toString()
-									: resultStmt.getObject().toString();
-							result.put(resultStmt.getPredicate().getURI(), object);
+						    Statement resultStmt = resultIterator.nextStatement();
+						    String predicateURI = resultStmt.getPredicate().getURI();
+
+						    // Handle literal values with type checking
+						    RDFNode objectNode = resultStmt.getObject();
+						    String object;
+						    if (objectNode.isLiteral()) {
+						        Literal literal = objectNode.asLiteral();
+						        // Check if the literal has a datatype
+						        if (literal.getDatatype() != null) {
+						            String datatypeURI = literal.getDatatypeURI();
+						            // Handle specific datatypes like xsd:date
+						            if ("http://www.w3.org/2001/XMLSchema#date".equals(datatypeURI)) {
+						                try {
+						                    object = literal.getString(); // Validate if it's a valid date
+						                } catch (DatatypeFormatException e) {
+						                    System.err.println("Invalid date literal: " + literal + " for predicate: " + predicateURI);
+						                    object = "Invalid date"; // Handle invalid date gracefully
+						                }
+						            } else {
+						                object = literal.getValue().toString();
+						            }
+						        } else {
+						            object = literal.getValue().toString(); // No datatype, interpret as string
+						        }
+						    } else {
+						        object = objectNode.toString();
+						    }
+
+						    result.put(predicateURI, object);
 						}
-						
-						result = convertToLocalNameMap(result);
+
+						if(!isFullUri) {
+							result = convertToLocalNameMap(result);
+						}
 						// Add the result to the list
 						results.add(result);
 					}
