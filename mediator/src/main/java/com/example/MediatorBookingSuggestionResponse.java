@@ -11,18 +11,18 @@ public class MediatorBookingSuggestionResponse {
 	private String bookingNumber;
 	private String cottageAddress;
 	private String cottageImageUrl;
-	private int numberOfPlaces;
-	private int numberOfBedrooms;
-	private int distanceToLake;
+	private String numberOfPlaces;
+	private String numberOfBedrooms;
+	private String distanceToLake;
 	private String nearestCity;
-	private int distanceToCity;
+	private String distanceToCity;
 	private String bookingStartDate;
 	private String bookingEndDate;
 
 	// Constructor
 	public MediatorBookingSuggestionResponse(String bookerName, String bookingNumber, String cottageAddress,
-			String cottageImageUrl, int numberOfPlaces, int numberOfBedrooms, int distanceToLake, String nearestCity,
-			int distanceToCity, String bookingStartDate, String bookingEndDate) {
+			String cottageImageUrl, String numberOfPlaces, String numberOfBedrooms, String distanceToLake, String nearestCity,
+			String distanceToCity, String bookingStartDate, String bookingEndDate) {
 		this.bookerName = bookerName;
 		this.bookingNumber = bookingNumber;
 		this.cottageAddress = cottageAddress;
@@ -47,11 +47,11 @@ public class MediatorBookingSuggestionResponse {
 		this.bookingNumber = data.getOrDefault("responseBookingNumber", null);
 		this.cottageAddress = data.getOrDefault("responseCottageAddress", null);
 		this.cottageImageUrl = data.getOrDefault("responseCottageImageUrl", null);
-		this.numberOfPlaces = Integer.parseInt(maxPeopleNumericValueStr);
-		this.numberOfBedrooms = Integer.parseInt(bedroomsNumericValueStr);
-		this.distanceToLake = Integer.parseInt(distanceToLakeNumericValueStr);
+		this.numberOfPlaces = maxPeopleNumericValueStr;
+		this.numberOfBedrooms = bedroomsNumericValueStr;
+		this.distanceToLake = distanceToLakeNumericValueStr;
 		this.nearestCity = data.getOrDefault("responseNearestCity", null);
-		this.distanceToCity = Integer.parseInt(distanceFromCityNumericValueStr);
+		this.distanceToCity = distanceFromCityNumericValueStr;
 		this.bookingStartDate = data.getOrDefault("responseBookingStartDate", null);
 		this.bookingEndDate = data.getOrDefault("responseBookingEndDate", null);
 	}
@@ -89,27 +89,27 @@ public class MediatorBookingSuggestionResponse {
 		this.cottageImageUrl = cottageImageUrl;
 	}
 
-	public int getNumberOfPlaces() {
+	public String getNumberOfPlaces() {
 		return numberOfPlaces;
 	}
 
-	public void setNumberOfPlaces(int numberOfPlaces) {
+	public void setNumberOfPlaces(String numberOfPlaces) {
 		this.numberOfPlaces = numberOfPlaces;
 	}
 
-	public int getNumberOfBedrooms() {
+	public String getNumberOfBedrooms() {
 		return numberOfBedrooms;
 	}
 
-	public void setNumberOfBedrooms(int numberOfBedrooms) {
+	public void setNumberOfBedrooms(String numberOfBedrooms) {
 		this.numberOfBedrooms = numberOfBedrooms;
 	}
 
-	public int getDistanceToLake() {
+	public String getDistanceToLake() {
 		return distanceToLake;
 	}
 
-	public void setDistanceToLake(int distanceToLake) {
+	public void setDistanceToLake(String distanceToLake) {
 		this.distanceToLake = distanceToLake;
 	}
 
@@ -121,11 +121,11 @@ public class MediatorBookingSuggestionResponse {
 		this.nearestCity = nearestCity;
 	}
 
-	public int getDistanceToCity() {
+	public String getDistanceToCity() {
 		return distanceToCity;
 	}
 
-	public void setDistanceToCity(int distanceToCity) {
+	public void setDistanceToCity(String distanceToCity) {
 		this.distanceToCity = distanceToCity;
 	}
 

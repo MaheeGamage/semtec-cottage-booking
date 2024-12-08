@@ -121,11 +121,18 @@ public class Extractor {
 						                    System.err.println("Invalid date literal: " + literal + " for predicate: " + predicateURI);
 						                    object = "Invalid date"; // Handle invalid date gracefully
 						                }
+						            } else if("http://www.w3.org/2001/XMLSchema#anyURI".equals(datatypeURI)) {
+						            	try {
+						            		object = literal.getValue().toString();
+						                } catch (DatatypeFormatException e) {
+						                    System.err.println("Invalid date literal: " + literal + " for predicate: " + predicateURI);
+						                    object = "Invalid URI"; // Handle invalid date gracefully
+						                }
 						            } else {
-						                object = literal.getValue().toString();
+						                object = literal.toString();
 						            }
 						        } else {
-						            object = literal.getValue().toString(); // No datatype, interpret as string
+						            object = literal.toString(); // No datatype, interpret as string
 						        }
 						    } else {
 						        object = objectNode.toString();
@@ -156,23 +163,23 @@ public class Extractor {
 		
 		return results;
 	}
-	
-    // Function to convert full URI map to local name map
-    public static Map<String, String> convertToLocalNameMap(Map<String, String> uriMap) {
-        Map<String, String> localNameMap = new HashMap<>();
 
-        for (Map.Entry<String, String> entry : uriMap.entrySet()) {
-            String fullURI = entry.getKey();
-            String value = entry.getValue();
+	// Function to convert full URI map to local name map
+	public static Map<String, String> convertToLocalNameMap(Map<String, String> uriMap) {
+		Map<String, String> localNameMap = new HashMap<>();
 
-            // Use Jena Resource to extract the local name from the URI
-            Resource resource = ModelFactory.createDefaultModel().createResource(fullURI);
-            String localName = resource.getLocalName();
+		for (Map.Entry<String, String> entry : uriMap.entrySet()) {
+			String fullURI = entry.getKey();
+			String value = entry.getValue();
 
-            // Add local name as key with the original value
-            localNameMap.put(localName, value);
-        }
+			// Use Jena Resource to extract the local name from the URI
+			Resource resource = ModelFactory.createDefaultModel().createResource(fullURI);
+			String localName = resource.getLocalName();
 
-        return localNameMap;
-    }
+			// Add local name as key with the original value
+			localNameMap.put(localName, value);
+		}
+
+		return localNameMap;
+	}
 }

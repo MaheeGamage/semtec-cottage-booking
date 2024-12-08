@@ -52,11 +52,11 @@ public class Booking extends HttpServlet {
 				"BK-20241029-67890", // booking number
 				"456 Mountain View Drive", // address of the cottage
 				"http://example.com/mountain.jpg", // image of the cottage
-				8, // actual number of places
-				4, // actual number of bedrooms
-				100, // distance to lake in meters
+				"8", // actual number of places
+				"4", // actual number of bedrooms
+				"100", // distance to lake in meters
 				"Evergreen City", // nearest city
-				30, // distance to nearest city in km
+				"30", // distance to nearest city in km
 				"2024-12-15", // booking start date
 				"2024-12-25" // booking end date
 		));
@@ -64,11 +64,11 @@ public class Booking extends HttpServlet {
 				"BK-20241029-54321", // booking number
 				"789 Sunset Blvd", // address of the cottage
 				"http://example.com/sunset.jpg", // image of the cottage
-				5, // actual number of places
-				2, // actual number of bedrooms
-				500, // distance to lake in meters
+				"5", // actual number of places
+				"2", // actual number of bedrooms
+				"500", // distance to lake in meters
 				"Riverside Town", // nearest city
-				75, // distance to nearest city in km
+				"75", // distance to nearest city in km
 				"2025-01-01", // booking start date
 				"2025-01-07" // booking end date
 		));
@@ -123,7 +123,7 @@ public class Booking extends HttpServlet {
 	        Model rigModel = ModelFactory.createDefaultModel();
 	        rigModel.read(inputStream, null, "RDF/XML");
 	        
-			results = SswapConnector.retrieveDataFromSswapWithRig(rigModel, sswapUrl);
+			results = SswapConnector.retrieveDataFromSswapWithRig(rigModel, sswapUrl, mediatorRequestObject.getAlignment());
 			
 		}
 		

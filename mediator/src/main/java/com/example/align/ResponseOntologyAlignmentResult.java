@@ -1,5 +1,9 @@
 package com.example.align;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+
 public class ResponseOntologyAlignmentResult {
 
 	private String responseBookerName;
@@ -123,4 +127,24 @@ public class ResponseOntologyAlignmentResult {
 	public void setResponseBookingEndDate(String responseBookingEndDate) {
 		this.responseBookingEndDate = responseBookingEndDate;
 	}
+	
+    // Conversion Method
+    public Map<String, String> toMap() {
+        Map<String, String> resultMap = new HashMap<>();
+
+        // Use reflection to retrieve all fields
+        Field[] fields = this.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true); // Allow access to private fields
+            try {
+                String fieldName = field.getName();
+                Object fieldValue = field.get(this);
+                resultMap.put(fieldName, fieldValue != null ? fieldValue.toString() : null);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException("Error accessing field: " + field.getName(), e);
+            }
+        }
+
+        return resultMap;
+    }
 }

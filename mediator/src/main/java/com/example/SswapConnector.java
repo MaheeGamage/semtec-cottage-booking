@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,21 +18,23 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 
+import com.example.align.OntologyAlignmentResult;
 import com.example.align.RequestOntologyAlignmentResult;
 import com.example.sswap.Extractor;
 
 public class SswapConnector {
 
 //	private static String sswapURL = "http://localhost:8080/sswap-servlet/cottage";
-	
+
 	public static ArrayList<MediatorBookingSuggestionResponse> retrieveDataFromSswap(RequestParams requestParams,
-			RequestOntologyAlignmentResult alignment, String sswapUrl){
-		
+			RequestOntologyAlignmentResult alignment, String sswapUrl, OntologyAlignmentResult alignmentResult) {
+
 		Model rigModel = MediatorRDGGenerator.generateRequestSswapResources(requestParams, alignment);
-		return retrieveDataFromSswapWithRig(rigModel, sswapUrl);
+		return retrieveDataFromSswapWithRig(rigModel, sswapUrl, alignmentResult);
 	}
 
-	public static ArrayList<MediatorBookingSuggestionResponse> retrieveDataFromSswapWithRig(Model rigModel, String sswapUrl) {
+	public static ArrayList<MediatorBookingSuggestionResponse> retrieveDataFromSswapWithRig(Model rigModel,
+			String sswapUrl, OntologyAlignmentResult alignmentResult) {
 		ArrayList<MediatorBookingSuggestionResponse> bookingList = new ArrayList<>();
 
 		try {
@@ -95,10 +98,25 @@ public class SswapConnector {
 //		            model.write(System.out, "TURTLE");
 
 //					ArrayList<Map<String, String>> bookingData = MediatorServiceUtil.extractBookingsFromRRG(model);
-					List<Map<String, String>> bookingData = Extractor.extractResultsFromModel(model, false);
+					List<Map<String, String>> bookingData = Extractor.extractResultsFromModel(model, true);
 
 					for (Map<String, String> singleBookingDataMap : bookingData) {
-						bookingList.add(new MediatorBookingSuggestionResponse(singleBookingDataMap));
+						// Map RRG response to base response
+						// Output map
+						Map<String, String> resultMap = new HashMap<>();
+
+						// Populate the output map
+						for (Map.Entry<String, String> entry : alignmentResult.getResponseAlignment().toMap().entrySet()) {
+							String key = entry.getKey();
+							String mappedKey = entry.getValue();
+							String value = singleBookingDataMap.get(mappedKey);
+
+							if (value != null) {
+								resultMap.put(key, value);
+							}
+						}
+
+						bookingList.add(new MediatorBookingSuggestionResponse(resultMap));
 					}
 
 				} catch (Exception e) {
