@@ -6,13 +6,15 @@ public class OntologyAlignmentResponse {
 
 	private OntologyAlignmentResult alignmentResults;
 	private List<String> sadiRequestProperties;
+	private List<String> sadiResponseProperties;
 	private String rdfFile;
 
 	// Constructor
 	public OntologyAlignmentResponse(OntologyAlignmentResult alignmentResults, List<String> sadiRequestProperties,
-			String rdfFile) {
+			List<String> sadiResponseProperties, String rdfFile) {
 		this.alignmentResults = alignmentResults;
 		this.sadiRequestProperties = sadiRequestProperties;
+		this.sadiResponseProperties = sadiResponseProperties;
 		this.rdfFile = rdfFile;
 	}
 
@@ -34,6 +36,14 @@ public class OntologyAlignmentResponse {
 
 	public void setSadiRequestProperties(List<String> sadiRequestProperties) {
 		this.sadiRequestProperties = sadiRequestProperties;
+	}
+	
+	public List<String> getSadiResponseProperties() {
+		return sadiResponseProperties;
+	}
+
+	public void setSadiResponseProperties(List<String> sadiResponseProperties) {
+		this.sadiResponseProperties = sadiResponseProperties;
 	}
 
 	public String getRdfFile() {

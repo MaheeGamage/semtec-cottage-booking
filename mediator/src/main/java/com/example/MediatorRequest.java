@@ -1,17 +1,17 @@
 package com.example;
 
-import com.example.align.RequestOntologyAlignmentResult;
+import com.example.align.OntologyAlignmentResult;
 
 public class MediatorRequest {
-	private RequestOntologyAlignmentResult alignment;
+	private OntologyAlignmentResult alignment;
 	private String rig;
 	
     // Getters and setters
-    public RequestOntologyAlignmentResult getAlignment() {
+    public OntologyAlignmentResult getAlignment() {
         return alignment;
     }
 
-    public void setAlignment(RequestOntologyAlignmentResult alignment) {
+    public void setAlignment(OntologyAlignmentResult alignment) {
         this.alignment = alignment;
     }
     

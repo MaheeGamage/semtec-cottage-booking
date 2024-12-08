@@ -95,14 +95,17 @@ public class OntologyAlignment extends HttpServlet {
 //			Map<String, String> alignment = performRandomAlignment(parameters);
 
 			OntologyAlignmentResult results = ontologyAligner.alignOntology(rdgModel);
-			
+
 			Map<String, String> guestFieldsMap = Extractor.extractFieldsFromModel(rdgModel);
 			List<String> extractedSadiRequestProperties = new ArrayList<>(guestFieldsMap.keySet());
-			
+
+			Map<String, String> guestResponseFieldsMap = Extractor.extractResultsFromModel(rdgModel, true).get(0);
+			List<String> extractedSadiResponseProperties = new ArrayList<>(guestResponseFieldsMap.keySet());
+
 			String rdfModelContentInXML = convertModelToRdfXmlString(rdgModel);
 
 			OntologyAlignmentResponse ontologyAlignmentResponse = new OntologyAlignmentResponse(results,
-					extractedSadiRequestProperties, rdfModelContentInXML);
+					extractedSadiRequestProperties, extractedSadiResponseProperties, rdfModelContentInXML);
 
 			// Step 5: Convert alignment to JSON and send response
 			String jsonResponse = new Gson().toJson(ontologyAlignmentResponse);
@@ -213,20 +216,20 @@ public class OntologyAlignment extends HttpServlet {
 		return parsedData;
 	}
 
-    public static String convertModelToRdfXmlString(Model model) {
-        try {
-            // Create a ByteArrayOutputStream to hold the RDF/XML string
-            OutputStream outputStream = new ByteArrayOutputStream();
+	public static String convertModelToRdfXmlString(Model model) {
+		try {
+			// Create a ByteArrayOutputStream to hold the RDF/XML string
+			OutputStream outputStream = new ByteArrayOutputStream();
 
-            // Write the model in RDF/XML format to the output stream
-            model.write(outputStream, "RDF/XML");
+			// Write the model in RDF/XML format to the output stream
+			model.write(outputStream, "RDF/XML");
 
-            // Convert the output stream to a string
-            return outputStream.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+			// Convert the output stream to a string
+			return outputStream.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 }

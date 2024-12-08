@@ -64,9 +64,13 @@ function doQuery() {
 		// 	}
 		// }
 
-		const finalAlignment = recreateJSON();
+		const requestAlignment = recreateAlignment('requestKeyValueContainer');
+		const responseAlignment = recreateAlignment('responseKeyValueContainer');
+
+		const finalAlignment = { requestAlignment, responseAlignment }
+
 		const rdfDataMap = Object.fromEntries(
-			Object.entries(finalAlignment).map(([key, uri]) => [uri, dataValueObj[key]])
+			Object.entries(finalAlignment.requestAlignment).map(([key, uri]) => [uri, dataValueObj[key]])
 		);
 
 		const rig = updateRDF(rdfFile, rdfDataMap);
@@ -181,7 +185,12 @@ function onAlignmentResponse(response) {
 
 		// On success:
 		document.getElementById('searchFormFieldSet').disabled = false;
-		displayAligmentData(parsedResult.alignmentResults.requestAlignment, parsedResult.sadiRequestProperties);
+
+		// Display request alignment datas
+		displayAligmentData(parsedResult.alignmentResults.requestAlignment, parsedResult.sadiRequestProperties, 'requestKeyValueContainer');
+
+		// Display response alignment data
+		displayAligmentData(parsedResult.alignmentResults.responseAlignment, parsedResult.sadiResponseProperties, 'responseKeyValueContainer');
 
 		// After successful connection
 		document.getElementById('disconnectBtn').style.display = '';
@@ -196,7 +205,7 @@ function onAlignmentResponse(response) {
 	}
 }
 
-function displayAligmentData(data, requestProperties) {
+function displayAligmentData(data, requestProperties, elementId) {
 	// Below is a sample 'data' JSON object to be used for testing
 	// const data = {
 	// 	"requestPeopleCount": "requestPeopleCount",
@@ -210,7 +219,7 @@ function displayAligmentData(data, requestProperties) {
 	// 	"requestMaxDayShifts": "requestMaxDayShifts"
 	// };
 
-	const container = document.getElementById('keyValueContainer');
+	const container = document.getElementById(elementId);
 	container.innerHTML = '';
 
 	Object.entries(data).forEach(([key, value]) => {
@@ -252,13 +261,16 @@ function displayAligmentData(data, requestProperties) {
 
 // Function to toggle the collapsible content
 function toggleContent() {
-	const content = document.getElementById('keyValueContainer');
+	const content = document.getElementById('requestKeyValueContainer');
+	content.style.display = content.style.display === 'block' ? 'none' : 'block';
+
+	const responseContent = document.getElementById('responseKeyValueContainer');
 	content.style.display = content.style.display === 'block' ? 'none' : 'block';
 }
 
 
-function recreateJSON() {
-	const container = document.getElementById('keyValueContainer');
+function recreateAlignment(elementId) {
+	const container = document.getElementById(elementId);
 	const rows = container.querySelectorAll('.alignment-display-row'); // Select all rows
 	const result = {};
 
@@ -271,8 +283,12 @@ function recreateJSON() {
 }
 
 function initializeDropdowns() {
-	const container = document.getElementById('keyValueContainer');
-	const dropdowns = container.querySelectorAll('.alignment-display-value'); // Select all dropdowns
+	const requestContainer = document.getElementById('requestKeyValueContainer');
+	const responseContainer = document.getElementById('responseKeyValueContainer');
+	const requestDropdowns = requestContainer.querySelectorAll('.alignment-display-value'); // Select all dropdowns
+	const responseDropdowns = responseContainer.querySelectorAll('.alignment-display-value'); // Select all dropdowns
+
+	const dropdowns = [...requestDropdowns, ...responseDropdowns];
 
 	dropdowns.forEach((dropdown) => {
 		dropdown.addEventListener('change', (event) => {
@@ -303,8 +319,11 @@ function onDisconnect() {
 
 	rdfFile = "";
 
-	const keyValueContainer = document.getElementById('keyValueContainer');
-	keyValueContainer.innerHTML = '';
+	const requestKeyValueContainer = document.getElementById('requestKeyValueContainer');
+	requestKeyValueContainer.innerHTML = '';
+
+	const responseKeyValueContainer = document.getElementById('responseKeyValueContainer');
+	responseKeyValueContainer.innerHTML = '';
 
 	const bookingSuggetioncontainer = document.getElementById('booking-suggestion-container');
 	bookingSuggetioncontainer.innerHTML = ''; // Clear previous content
