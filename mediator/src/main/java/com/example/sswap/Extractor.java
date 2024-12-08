@@ -129,7 +129,7 @@ public class Extractor {
 						                    object = "Invalid URI"; // Handle invalid date gracefully
 						                }
 						            } else {
-						                object = literal.toString();
+						                object = literal.getString();
 						            }
 						        } else {
 						            object = literal.toString(); // No datatype, interpret as string
