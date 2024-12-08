@@ -181,7 +181,7 @@ function onAlignmentResponse(response) {
 
 		// On success:
 		document.getElementById('searchFormFieldSet').disabled = false;
-		displayAligmentData(parsedResult.alignmentResults, parsedResult.sadiRequestProperties);
+		displayAligmentData(parsedResult.alignmentResults.requestAlignment, parsedResult.sadiRequestProperties);
 
 		// After successful connection
 		document.getElementById('disconnectBtn').style.display = '';
