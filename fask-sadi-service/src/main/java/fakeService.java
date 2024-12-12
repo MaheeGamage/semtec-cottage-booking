@@ -17,12 +17,12 @@ public class fakeService extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	// Group 3
-//	private static final String rdgFilePath = "/res/Group03/RDG.xml";
-//	private static final String rrgFilePath = "/res/Group03/RRG.xml";
+	private static final String rdgFilePath = "/res/Group03/RDG.xml";
+	private static final String rrgFilePath = "/res/Group03/RRG.xml";
 	
 	// Group 8
-	private static final String rdgFilePath = "/res/Group08/cottageSSWAPServiceRDG.xml";
-	private static final String rrgFilePath = "/res/Group08/cottageSSWAPServiceRRG.rdf";
+//	private static final String rdgFilePath = "/res/Group08/cottageSSWAPServiceRDG.xml";
+//	private static final String rrgFilePath = "/res/Group08/cottageSSWAPServiceRRG.rdf";
 
 	/**
 	 * Default constructor.

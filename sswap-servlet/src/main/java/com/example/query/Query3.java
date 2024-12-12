@@ -58,4 +58,10 @@ public class Query3 implements IQuery {
 		return queryString;
 	}
 
+	@Override
+	public String generateQuery(RequestParams params) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'generateQuery'");
+	}
+
 }
